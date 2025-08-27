@@ -3,6 +3,7 @@ import { model, Schema,Types } from "mongoose";
 export const WaitingProvidersSchema = new Schema({
     requestId: {
         type: Types.ObjectId,
+        ref:"Services",
         required: true
     },
     providerId: {

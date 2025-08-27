@@ -33,10 +33,10 @@ export const AddService = asyncHandler(async (req, res, next) => {
 })
 
 export const GetAllServices = asyncHandler(async (req, res, next) => {
-    const Services = await Services.find().populate('userId', 'name email').populate('providerId', 'name email');
+    const services  = await Services.find().populate('userId', 'name email').populate('providerId', 'name email');
     return res.json({
         message: "All Services requests",
-        Services
+        services 
     });
 })
 
@@ -60,11 +60,11 @@ export const GetUserServices=asyncHandler(async (req,res,next)=>{
     {
         return next(new Error("User not found"))
     }
-    const Services=await Services.find({userId})
+    const services=await Services.find({userId})
     return res.json({
         message:"User services retrieved successfully",
         count: services.length,
-        Services
+        services
     })
 })
 
@@ -75,7 +75,7 @@ export const AssignProviderByAdmin = asyncHandler(async (req, res, next) => {
     if (!Service) {
         return next(new Error ( "Service request not found" ,{cause:404}));
     }
-    const providers = await User.find({ _id: { $in: providerIds }, role: "provider" });
+    const providers = await User.find({ _id: { $in: providerIds }, role: "Service Provider" });
     if (providers.length !== providerIds.length) {
         return next(new Error ( "One or more providers not found or invalid" ,{cause:404}));
     }
@@ -131,7 +131,7 @@ export const getprovidersAssigned=asyncHandler(async(req,res,next)=>{
     {
         return next(new Error('service not found'))
     }
-    if(!service.candidates || service.candidates===0){
+    if(!service.candidates || service.candidates.length===0){
         return next(new Error('No providers assigned yet'))
     }
     const providersAssigned=await User.find({_id:{$in:service.candidates}})
@@ -150,7 +150,7 @@ export const SelectProviderByUser = asyncHandler(async (req, res, next) => {
     if (Service.userId.toString() !== userId) {
         return next(new Error ( "Unauthorized action" ,{cause:403}));
     }
-    if (!grammarcheck.candidates.includes(providerId)) {
+    if (!Service.candidates.includes(providerId)) {
         return next(new Error ( "Selected provider is not in the candidate list" ,{cause:400}));
     }
     Service.providerId = providerId;

@@ -1,7 +1,7 @@
 import Joi from "joi";
-import { isValidObjectId } from "../../MiddleWare/Validation.js";
+import { validate , isValidObjectId } from "../../MiddleWare/Validation.js";
 
-export const baseSchema =({
+export const baseSchema ={
     userId: Joi.string().custom(isValidObjectId).required(),
     requestName: Joi.string().required(),
     description: Joi.string(),
@@ -18,8 +18,8 @@ export const baseSchema =({
         "SoftwareToolsAccess",
         "ChemicalSuppliers",
         "Printing").required(),
-    //uploadFile: Joi.string().required(),
-})
+        //uploadFile: Joi.array().items(Joi.string()).required()
+};
 
 export const GrammarCheckService =Joi.object({
     ...baseSchema,
@@ -43,7 +43,7 @@ export const TranslationService =Joi.object({
     targetLanguage : Joi.string().required(),
 })
 
-export const ScientificIllustrationService =({
+export const ScientificIllustrationService =Joi.object({
     ...baseSchema,
 })
 
@@ -79,7 +79,7 @@ export const printingSchema = Joi.object({
     paperType: Joi.string().required(),
     paperSize: Joi.string().required(),
     colorMode: Joi.string().valid("Color", "B&W").required(),
-    bindingType: Joi.string().optional(),
+    bindingType: Joi.string().required(),
     NumberOfcopies: Joi.number().required()
 })
 
@@ -124,7 +124,7 @@ export const chooseServiceSchema= (req, res, next) => {
             schema = printingSchema;
             break;  
         default:
-            return new Error("Invalid service type");
+            return next (new Error("Invalid service type"));
     }
     return validate(schema)(req, res, next);
 }
