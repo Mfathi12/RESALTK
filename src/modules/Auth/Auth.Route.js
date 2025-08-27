@@ -7,13 +7,12 @@ import { validate } from "../../MiddleWare/Validation.js";
 const router = Router();
 
 
-router.post("/register",AuthSchema.chooseSchema,fileUpload().single("cv"),
-  (req, res, next) => {
-    if (req.file) {
-      req.body.cv = req.file.path; 
-    }
-    next();
-  },AuthController.register);
+router.post(
+  "/register",
+  fileUpload().single("cv"),  // أول حاجة Multer يقرأ الملفات
+  AuthSchema.chooseSchema,    // بعد كده Validation على req.body بعد ما cv اتضاف
+  AuthController.register
+);
 router.post("/login",validate(AuthSchema.LoginSchema) ,AuthController.login);
 router.post("/forget-password",validate(AuthSchema.forgetPasswordSchema),AuthController.forgetPassword);
 router.post("/reset-password",validate(AuthSchema.resetPasswordSchema),AuthController.resetPassword);

@@ -16,6 +16,9 @@ export const register = asyncHandler(async (req, res, next) => {
     }
     const hashedPassword = await bcrypt.hash(password, 8);
     req.body.password = hashedPassword;
+ if (req.body.accountType === "Service Provider" && !req.file) {
+  return next(new Error("CV is required for service providers"));
+}
     const user = await User.create(req.body);
 
     const token = jwt.sign(
@@ -50,8 +53,6 @@ export const login = asyncHandler(async (req, res, next) => {
         user,
         token
     });
-
-
 
 })
 

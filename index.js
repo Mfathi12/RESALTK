@@ -3,6 +3,7 @@ import {connectDB} from './DB/connection.js';
 import AuthRouter from './src/modules/Auth/Auth.Route.js';
 import UserRouter from './src/modules/User/User.Router.js';
 import GrammarCheckRouter from './src/modules/Services/Services.Router.js';
+import path from "path"
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -11,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 connectDB();
-
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 app.use('/auth', AuthRouter);  
 app.use('/user', UserRouter);
 app.use('/grammer-check',GrammarCheckRouter);

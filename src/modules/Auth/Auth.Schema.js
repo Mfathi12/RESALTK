@@ -23,11 +23,11 @@ export const researcherSchema = Joi.object({
 // provider schema
 export const providerSchema = Joi.object({
     ...baseSchema,
-    cv: Joi.string().required(),
+    cv: Joi.string().optional(),
     companyName: Joi.string().required(),
     address: Joi.string().required(),
     commercialRegistration: Joi.string().required(),
-    logo: Joi.string().required(),
+    //logo: Joi.string().required(),
     service: Joi.string().optional(),
 });
 
