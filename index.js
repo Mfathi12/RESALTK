@@ -10,7 +10,7 @@ dotenv.config();
 const app = express();  
 const PORT = process.env.PORT || 3000;
 app.use(express.json());
-
+console.log(process.env.MONGO_URI)
 connectDB();
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 app.use('/auth', AuthRouter);  
