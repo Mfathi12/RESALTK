@@ -31,3 +31,18 @@ export const updateUserSchema = Joi.object({
     logo: Joi.string(),
     service: Joi.string(),
 }).required();
+
+export const AddDoctor=Joi.object({
+    name: Joi.string().min(3).max(30),
+    email: Joi.string().email(),
+    password: Joi.string().min(6).max(30),
+    confirmPassword: Joi.string().valid(Joi.ref("password")).when("password", {
+        is: Joi.exist(),
+        then: Joi.required(),
+    }),
+
+    degree:Joi.string(),
+    Biography:Joi.string(),
+    Expertise:Joi.string(),
+    image:Joi.string()
+}).required()

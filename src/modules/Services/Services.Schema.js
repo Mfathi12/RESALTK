@@ -141,7 +141,7 @@ export const SelectProviderByUser = Joi.object({
 }).required();
 
 export const GetUserServices=Joi.object({
-    providerId:Joi.string().custom(isValidObjectId).required()
+    userId:Joi.string().custom(isValidObjectId).required()
 }).required()
 
 export const GetSpecificProviders=Joi.object({
@@ -151,6 +151,8 @@ export const GetSpecificProviders=Joi.object({
 export const SetProviderPrice=Joi.object({
     providerId:Joi.string().custom(isValidObjectId).required(),
     serviceId:Joi.string().custom(isValidObjectId).required(),
+    price:Joi.string().required()
+
 }).required()
 
 export const GetAllProviderRequests=Joi.object({

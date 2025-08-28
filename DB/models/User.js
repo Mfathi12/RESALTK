@@ -25,7 +25,7 @@ export const UserSchema = new Schema({
     },
     accountType: {
         type: String,
-        enum: ['Researcher', 'Service Provider', 'admin'],
+        enum: ['Researcher', 'Service Provider', 'admin' , 'Doctor'],
     },
 
     services: [serviceMappingSchema],
@@ -91,6 +91,10 @@ export const UserSchema = new Schema({
     resetPasswordExpires: {
         type: Date,
     },
+profilePic: { 
+    type: String, 
+    default: null 
+}
 
 }, { timestamps: true });
 

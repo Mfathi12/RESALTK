@@ -14,8 +14,7 @@ export const register = asyncHandler(async (req, res, next) => {
     if (password !== confirmPassword) {
         return next(new Error("Passwords do not match"));
     }
-    const hashedPassword = await bcrypt.hash(password, 8);
-    req.body.password = hashedPassword;
+    req.body.password = await bcrypt.hash(password, 8);;
  if (req.body.accountType === "Service Provider" && !req.file) {
   return next(new Error("CV is required for service providers"));
 }
@@ -68,7 +67,7 @@ export const forgetPassword=asyncHandler(async (req,res,next)=>{
 user.resetPasswordOTP = otp;
   user.resetPasswordExpires = Date.now() + 10 * 60 * 1000; 
 await user.save();
-
+return res.json({message:"entire your new password"})
     
 })
 
@@ -93,4 +92,4 @@ export const resetPassword = asyncHandler(async (req, res, next) => {
         message: "Password reset successfully",
     });
 
-})
+}) 

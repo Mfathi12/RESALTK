@@ -4,7 +4,7 @@ import { validate } from "../../MiddleWare/Validation.js";
 const baseSchema = {
     name: Joi.string().required().min(3).max(30),
     email: Joi.string().email().required(),
-    password: Joi.string().required().min(6).max(30),
+    password: Joi.string().required().min(6).max(30).required(),
     confirmPassword: Joi.string().required().valid(Joi.ref('password')),
     phone: Joi.string().optional(),
     accountType: Joi.string().valid('Researcher', 'Service Provider', 'admin').required(),
@@ -36,6 +36,12 @@ export const adminSchema = Joi.object({
     ...baseSchema,
 });
 
+//doctor schema
+export const doctorSchema = Joi.object({
+    ...baseSchema,
+});
+
+
 export const chooseSchema = (req, res, next) => {
     let schema;
     switch (req.body.accountType) {
@@ -47,6 +53,9 @@ export const chooseSchema = (req, res, next) => {
             break;
         case "admin":
             schema = adminSchema;
+            break;
+        case "doctor":
+            schema= doctorSchema;
             break;
         default:
             return res.status(400).json({ message: "Invalid account type" });

@@ -1,4 +1,5 @@
 import { User } from "../../../DB/models/User.js";
+import mongoose from "mongoose";
 import { asyncHandler } from "../../Utils/asyncHandler.js";
 import { Services } from "../../../DB/models/Services.js";
 import { WaitingProviders } from "../../../DB/models/WaitingProviders.js";
@@ -75,9 +76,10 @@ export const AssignProviderByAdmin = asyncHandler(async (req, res, next) => {
     if (!Service) {
         return next(new Error ( "Service request not found" ,{cause:404}));
     }
-    const providers = await User.find({ _id: { $in: providerIds }, role: "Service Provider" });
+    const providerObjectIds = providerIds.map(id => new mongoose.Types.ObjectId(id));
+    const providers = await User.find({ _id: { $in: providerObjectIds }, accountType: "Service Provider" });
     if (providers.length !== providerIds.length) {
-        return next(new Error ( "One or more providers not found or invalid" ,{cause:404}));
+        return next(new Error ( "One or more providers not found or invalid" ));
     }
     Service.candidates.push(...providerIds);
     Service.status = "provider-selection";

@@ -9,7 +9,6 @@ export const getAllUsers=asyncHandler(async (req, res,next) => {
     })
 })
 
-
 export const getUserById=asyncHandler(async (req, res,next) => {
     const user = await User.findById(req.params.id);
     if (!user) {
@@ -54,3 +53,17 @@ export const getProviders=asyncHandler(async (req, res,next) => {
         providers
     });
 }) 
+export const AddDoctor=asyncHandler(async (req,res,next)=>{
+    const {email,password}= req.body;
+    const doctor=await User.findOne(email)
+    if(doctor)
+    {
+        return next(new Error("docto is already exsist"))
+    }
+        let profileImage = null;
+    if (req.file) {
+    profileImage = req.file.filename; 
+    }
+    const Doctor =await User.create(req.body)
+    return res.json({message:"doctor added succefully",Doctor})
+})
