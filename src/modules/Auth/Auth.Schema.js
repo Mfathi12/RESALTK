@@ -43,6 +43,9 @@ export const doctorSchema = Joi.object({
 
 
 export const chooseSchema = (req, res, next) => {
+    if (!req.body || !req.body.accountType) {
+        return res.status(400).json({ message: "accountType is required in request body" });
+    }
     let schema;
     switch (req.body.accountType) {
         case "Researcher":
@@ -55,7 +58,7 @@ export const chooseSchema = (req, res, next) => {
             schema = adminSchema;
             break;
         case "doctor":
-            schema= doctorSchema;
+            schema = doctorSchema;
             break;
         default:
             return res.status(400).json({ message: "Invalid account type" });

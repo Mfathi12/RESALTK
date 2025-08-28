@@ -24,4 +24,5 @@ app.use((err,req,res,next)=>{
     res.status(statusCode).json({message: err.message, stack: err.stack});
 })
 
-app.listen(PORT , console.log(`Server is running on port ${PORT}`));
+//app.listen(PORT , console.log(`Server is running on port ${PORT}`));
+export default app;
