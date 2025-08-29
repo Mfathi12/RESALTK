@@ -77,7 +77,7 @@ export const forgetPasswordSchema = Joi.object({
 
 export const resetPasswordSchema = Joi.object({
     email: Joi.string().email().required(),
-    resetPasswordOTP: Joi.string().required(),  
+    otp: Joi.string().required(),  
     newPassword: Joi.string().required().min(6).max(30),
     confirmNewPassword: Joi.string().required().valid(Joi.ref('newPassword')),
 }).required();
