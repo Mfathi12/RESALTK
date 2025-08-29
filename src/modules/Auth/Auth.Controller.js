@@ -2,6 +2,7 @@ import { User } from "../../../DB/models/User.js";
 import { asyncHandler } from "../../Utils/asyncHandler.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import randomstring from "randomstring"
 
 export const register = asyncHandler(async (req, res, next) => {
     const {name, email,password ,confirmPassword } = req.body;
@@ -62,7 +63,10 @@ export const forgetPassword=asyncHandler(async (req,res,next)=>{
         return next(new Error("Email not found"));
     }
 
-    const otp = crypto.randomInt(100000, 999999).toString();
+    const otp = randomstring.generate(
+        {length:6,
+        charset:"numeric"}
+    )
 
 user.resetPasswordOTP = otp;
   user.resetPasswordExpires = Date.now() + 10 * 60 * 1000; 
