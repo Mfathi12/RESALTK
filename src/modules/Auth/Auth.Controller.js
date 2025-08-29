@@ -82,7 +82,7 @@ export const resetPassword = asyncHandler(async (req, res, next) => {
     const { email, otp, newPassword, confirmNewPassword } = req.body;
     const user = await User.findOne({ email, resetPasswordOTP: otp });
     if (!user) {
-        return next(new Error("Invalid OTP or email"));
+        return next(new Error("user not found"));
     }
     if (newPassword !== confirmNewPassword) {
         return next(new Error("Passwords do not match"));
