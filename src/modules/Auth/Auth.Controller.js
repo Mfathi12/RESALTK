@@ -74,7 +74,7 @@ export const forgetPassword = asyncHandler(async (req, res, next) => {
     user.resetPasswordExpires = Date.now() + 10 * 60 * 1000;
     await user.save();
     console.log(otp);
-    return res.json({ message: "entire your new password", data: otp })
+    return res.json({ message: "otp send successfully", data: otp })
 
 })
 
