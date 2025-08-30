@@ -72,8 +72,7 @@ export const UserSchema = new Schema({
     }, 
     
     providedServices: { 
-        type: [String], 
-        default: [] 
+        type: [String],  
     }, 
 
     serviceDescription: {
