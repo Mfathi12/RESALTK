@@ -25,7 +25,7 @@ export const UserSchema = new Schema({
     },
     accountType: {
         type: String,
-        enum: ['Researcher', 'Service Provider', 'admin' , 'Doctor'],
+        enum: ['Researcher', 'Service Provider', 'admin' , 'doctor'],
     },
 
     services: [serviceMappingSchema],
