@@ -16,9 +16,9 @@ export const register = asyncHandler(async (req, res, next) => {
         return next(new Error("Passwords do not match"));
     }
     req.body.password = await bcrypt.hash(password, 8);;
-    if (req.body.accountType === "Service Provider" && !req.file) {
+   /*  if (req.body.accountType === "Service Provider" && !req.file) {
         return next(new Error("CV is required for service providers"));
-    }
+    } */
     const user = await User.create(req.body);
 
     const token = jwt.sign(

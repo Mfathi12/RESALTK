@@ -27,7 +27,7 @@ export const providerSchema = Joi.object({
     educationLevel: Joi.string().required(),
     university: Joi.string().required(),
     degree: Joi.string().required(),
-    cv: Joi.string().optional(),
+    //cv: Joi.string().optional(),
     major: Joi.string().required(),
     providedServices: Joi.array().items(Joi.string()).min(1).required()
 });
