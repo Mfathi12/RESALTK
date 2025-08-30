@@ -53,6 +53,7 @@ export const getProviders=asyncHandler(async (req, res,next) => {
         providers
     });
 }) 
+
 export const AddDoctor=asyncHandler(async (req,res,next)=>{
     const {email,password}= req.body;
     const doctor=await User.findOne(email)
