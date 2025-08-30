@@ -23,13 +23,24 @@ export const researcherSchema = Joi.object({
 // provider schema
 export const providerSchema = Joi.object({
     ...baseSchema,
+    nationalId:Joi.string().required(),
+    educationLevel: Joi.string().required(),
+    university: Joi.string().required(),
+    degree: Joi.string().required(),
     cv: Joi.string().optional(),
+    major: Joi.string().required(),
+    providedServices: Joi.array().items(Joi.string()).min(1).required()
+});
+
+//company schema
+export const companySchema=Joi.object({
+    ...baseSchema,
     companyName: Joi.string().required(),
     address: Joi.string().required(),
     commercialRegistration: Joi.string().required(),
+    providedServices: Joi.array().items(Joi.string()).min(1).required(),
     //logo: Joi.string().required(),
-    service: Joi.string().optional(),
-});
+})
 
 // admin schema
 export const adminSchema = Joi.object({
@@ -40,7 +51,6 @@ export const adminSchema = Joi.object({
 export const doctorSchema = Joi.object({
     ...baseSchema,
 });
-
 
 export const chooseSchema = (req, res, next) => {
     if (!req.body || !req.body.accountType) {
@@ -54,6 +64,8 @@ export const chooseSchema = (req, res, next) => {
         case "Service Provider":
             schema = providerSchema;
             break;
+        case "company":
+            schema = companySchema;
         case "admin":
             schema = adminSchema;
             break;
