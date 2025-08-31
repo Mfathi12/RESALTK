@@ -35,7 +35,7 @@ export const updateUser=asyncHandler(async (req, res,next) => {
     });
 })           
 
-export const deleteUser=asyncHandler(async (req, res ,next) => {
+/* export const deleteUser=asyncHandler(async (req, res ,next) => {
     const user = await User.findByIdAndDelete(req.params.id);   
     if (!user) {
         return next (new Error ("User not found" ));
@@ -44,7 +44,7 @@ export const deleteUser=asyncHandler(async (req, res ,next) => {
         message: "User deleted successfully",
         user
     });
-})
+}) */
 
 export const getProviders=asyncHandler(async (req, res,next) => {
     const providers = await User.find({ accountType: "provider" }).select("-password -otp -__v");
