@@ -22,7 +22,7 @@ export const getProjects=Joi.object({
 
 export const getAchievement=Joi.object({
     teamId:Joi.string().custom(isValidObjectId).required(),
-    AchievementsId:Joi.string().custom(isValidObjectId).required(),
+    AchievementId:Joi.string().custom(isValidObjectId).required(),
 }).required();
 export const getProject=Joi.object({
     teamId:Joi.string().custom(isValidObjectId).required(),

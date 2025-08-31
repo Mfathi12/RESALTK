@@ -81,7 +81,7 @@ export const getProject=asyncHandler(async(req,res,next)=>{
     if(!team.projects.includes(projectId)){
         return next(new Error("this project does not belong to this team"))
     }
-    const project=team.projects.findById(projectId)
+    const project=await Project.findById(projectId)
     if(!project)
     {
         return next(new Error("project not found"))
@@ -99,7 +99,7 @@ export const getAchievement=asyncHandler(async(req,res,next)=>{
     if(!team.Achievements.includes(AchievementId)){
         return next(new Error("this Achievement does not belong to this team"))
     }
-    const achievement=team.Achievements.findById(AchievementId)
+    const achievement=await Achievement.findById(AchievementId)
     if(!achievement)
     {
         return next(new Error("Achievement not found"))
