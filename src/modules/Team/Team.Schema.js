@@ -12,11 +12,12 @@ export const AddTeamSchema = Joi.object({
     requiredSkills: Joi.string().optional(),
     members: Joi.array().items(
         Joi.object({
-            user: Joi.string().required(),
+            user: Joi.string().custom(isValidObjectId).required(),
             role: Joi.string().optional()
         })
     ).optional(),
-    projectsAndAchievements: Joi.array().items(Joi.string()).optional(),
+    projects: Joi.array().items(Joi.string()).optional(),
+    Achievements: Joi.array().items(Joi.string()).optional(),
     eventsAndNews: Joi.array().items(Joi.string()).optional(),
     services: Joi.array().items(Joi.string()).optional(),
     image: Joi.string().optional()
