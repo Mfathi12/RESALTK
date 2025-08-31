@@ -4,7 +4,7 @@ import { Project } from "../../../DB/models/ProjectsAndAchievements.js";
 
 export const addProject=asyncHandler(async(req,res)=>{
 
-    const {title,description,fieldOfResearch,projectType}=req.body;
+    const {projectTitle,projectDescription,fieldOfResearch,projectType}=req.body;
     const {teamId}=req.params
     const team=await Team.findById(teamId)
     if(!team)
@@ -15,7 +15,7 @@ export const addProject=asyncHandler(async(req,res)=>{
     {
         return next(new Error("only team leader can add project"))
     }
-    const project=await Project.create({title,description,fieldOfResearch,projectType});
+    const project=await Project.create({projectTitle,projectDescription,fieldOfResearch,projectType});
     team.projects.push(project._id)
     return res.json({message:"project created succefuully",project })
 })
