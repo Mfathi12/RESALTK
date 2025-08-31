@@ -1,4 +1,4 @@
-import { Team } from "../../../DB/models/Team";
+import { Team } from "../../../DB/models/Team.js";
 import { User } from "../../../DB/models/User.js";
 import { asyncHandler } from "../../Utils/asyncHandler.js";
 
