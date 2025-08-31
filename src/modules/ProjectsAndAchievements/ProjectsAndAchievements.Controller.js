@@ -20,3 +20,89 @@ export const addProject=asyncHandler(async(req,res)=>{
     await team.save();
     return res.json({message:"project created succefuully",project })
 })
+
+export const addAchievement=asyncHandler(async(req,res)=>{
+
+    const {achievementTitle,achievementDescription,fieldOfResearch}=req.body;
+    const {teamId}=req.params
+    const team=await Team.findById(teamId)
+    if(!team)
+    {
+        return next(new Error("team not found"))
+    }
+    if(!team.teamLeader.equals(req.user._id))
+    {
+        return next(new Error("only team leader can add project"))
+    }
+    const achievement=await Project.create({achievementTitle,achievementDescription,fieldOfResearch});
+    team.Achievements.push(achievement._id);
+    await team.save();
+    return res.json({message:"achievement created succefuully",achievement })
+})
+
+export const getProjects=asyncHandler(async(req,res,next)=>{
+    const {teamId}=req.params
+    const team = await Team.findById(teamId).populate("projects");
+    if(!team)
+    {
+        return next(new Error("team not found"))
+    }
+    
+if (!team.projects || team.projects.length  === 0) {
+    return res.json({message:"no projects found for this team"})
+}
+
+    return res.json({message:"projects fetched succefuully",projects:team.projects })
+})
+
+export const getAchievements=asyncHandler(async(req,res,next)=>{
+    const {teamId,AchievementId}=req.params
+
+    const team = await Team.findById(teamId).populate("Achievements");
+    if(!team)
+    {
+        return next(new Error("team not found"))
+    }
+    
+if (!team.Achievements || team.Achievements.length  === 0) {
+    return res.json({message:"no Achievements found for this team"})
+}
+
+    return res.json({message:"Achievements fetched succefuully",Achievements:team.Achievements })
+})
+
+export const getProject=asyncHandler(async(req,res,next)=>{
+    const {teamId,projectId}=req.params
+    const team = await Team.findById(teamId);
+    if(!team)
+    {
+        return next(new Error("team not found"))
+    }
+    if(!team.projects.includes(projectId)){
+        return next(new Error("this project does not belong to this team"))
+    }
+    const project=team.projects.findById(projectId)
+    if(!project)
+    {
+        return next(new Error("project not found"))
+    }   
+    return res.json({message:"project fetched succefuully",project })
+})
+
+export const getAchievement=asyncHandler(async(req,res,next)=>{
+    const {teamId,AchievementId}=req.params
+    const team = await Team.findById(teamId);   
+    if(!team)
+    {
+        return next(new Error("team not found"))
+    }   
+    if(!team.Achievements.includes(AchievementId)){
+        return next(new Error("this Achievement does not belong to this team"))
+    }
+    const achievement=team.Achievements.findById(AchievementId)
+    if(!achievement)
+    {
+        return next(new Error("Achievement not found"))
+    }   
+    return res.json({message:"Achievement fetched succefuully",achievement })
+})
