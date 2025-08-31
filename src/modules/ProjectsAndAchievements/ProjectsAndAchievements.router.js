@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { Authentication } from "../../MiddleWare/Authentication.js";
 import { Authorization } from "../../MiddleWare/Authorization.js";
-import * as ProjectsAndAchievementsController from "./ProjectsAndAchievements.controller.js";
+import * as ProjectsAndAchievementsController from "./ProjectsAndAchievements.Controller.js";
 import * as ProjectsAndAchievementsSchema from "./ProjectsAndAchievements.Schema.js";
 import { validate } from "../../MiddleWare/Validation.js";
 const router = Router();
