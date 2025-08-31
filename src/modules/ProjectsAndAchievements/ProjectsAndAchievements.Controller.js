@@ -1,6 +1,6 @@
 import { asyncHandler } from "../../Utils/asyncHandler.js";
 import { Team } from "../../../DB/models/Team.js";
-import { Project } from "../../../DB/models/ProjectsAndAchievements.js";
+import { Achievement, Project } from "../../../DB/models/ProjectsAndAchievements.js";
 
 export const addProject=asyncHandler(async(req,res,next)=>{
 
@@ -32,9 +32,9 @@ export const addAchievement=asyncHandler(async(req,res,next)=>{
     }
     if(!team.teamLeader.equals(req.user._id))
     {
-        return next(new Error("only team leader can add project"))
+        return next(new Error("only team leader can add Achievement"))
     }
-    const achievement=await Project.create({achievementTitle,achievementDescription,fieldOfResearch});
+    const achievement=await Achievement.create({achievementTitle,achievementDescription,fieldOfResearch});
     team.Achievements.push(achievement._id);
     await team.save();
     return res.json({message:"achievement created succefuully",achievement })
