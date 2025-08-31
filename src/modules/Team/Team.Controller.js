@@ -19,8 +19,8 @@ export const AddTeam=asyncHandler(async(req,res,next)=>{
 export const GetTeam=asyncHandler(async(req,res,next)=>{
     const {teamId}=req.params
     const team=await  Team.findById(teamId).populate('teamLeader', 'name email')
-        .populate('projectsAndAchievements')
-        .populate('eventsAndNews')
+        .populate('projects')
+        .populate('Achievements')
         .populate('services');
         if (!team) {
         return next(new Error("team not found"))

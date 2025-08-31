@@ -15,7 +15,7 @@ router.post(
     validate(TeamSchema.AddTeamSchema),
     TeamController.AddTeam
 );
-router.get('/:teamId',Authentication, validate(TeamSchema.GetTeamSchema), TeamController.GetTeam)
+router.get('/:teamId',Authentication, validate(TeamSchema.GetTeamSchema),Authorization("Researcher","admin","Service Provider","company"),TeamController.GetTeam)
 router.get('/:userId',Authentication,Authorization('Researcher') ,validate(TeamSchema.GetMemberTeamsSchema), TeamController.GetMemberTeamsSchema)
 //router.patch('/teamId',Authentication,Authorization('Researcher'),validate(TeamSchema.UpdateTeamSchema),TeamController.GetMemberTeamsSchema.UpdateTeamSchema)
 export default router;
