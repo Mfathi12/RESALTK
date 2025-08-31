@@ -16,6 +16,7 @@ export const addProject=asyncHandler(async(req,res)=>{
         return next(new Error("only team leader can add project"))
     }
     const project=await Project.create({projectTitle,projectDescription,fieldOfResearch,projectType});
-    team.projects.push(project._id)
+    team.projects.push(project._id);
+    await team.save();
     return res.json({message:"project created succefuully",project })
 })
