@@ -6,6 +6,7 @@ export const AddTeam=asyncHandler(async(req,res,next)=>{
     if (req.file) {
         req.body.image = req.file.path; 
     }
+    req.body.teamLeader = req.user._id;
     const team =await Team.create(req.body);
     return res.json({messag:"team created succefuully",team })
 })

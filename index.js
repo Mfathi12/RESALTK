@@ -3,6 +3,7 @@ import {connectDB} from './DB/connection.js';
 import AuthRouter from './src/modules/Auth/Auth.Route.js';
 import UserRouter from './src/modules/User/User.Router.js';
 import services from './src/modules/Services/Services.Router.js';
+import ProjectsAndAchievementsRouter from './src/modules/ProjectsAndAchievements/ProjectsAndAchievements.router.js';
 import path from "path"
 import dotenv from 'dotenv';
 dotenv.config();
@@ -16,6 +17,7 @@ app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 app.use('/auth', AuthRouter);  
 app.use('/user', UserRouter);
 app.use('/services',services);
+app.use('/ProjectsAndAchievements',ProjectsAndAchievementsRouter);
 
 
 //global error handler

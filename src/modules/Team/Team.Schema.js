@@ -8,12 +8,18 @@ export const AddTeamSchema = Joi.object({
     fieldOfResearch: Joi.string().optional(),
     jobTitle: Joi.string().optional(),
     requiredSkills: Joi.string().optional(),
-    members: Joi.array().items(Joi.string()).optional(),
+    members: Joi.array().items(
+        Joi.object({
+            user: Joi.string().required(),
+            role: Joi.string().optional()
+        })
+    ).optional(),
     projectsAndAchievements: Joi.array().items(Joi.string()).optional(),
     eventsAndNews: Joi.array().items(Joi.string()).optional(),
     services: Joi.array().items(Joi.string()).optional(),
     image: Joi.string().optional()
 }).required();
+
 
 export const GetTeamSchema=Joi.object({
     teamId:Joi.string().custom(isValidObjectId).required()

@@ -8,10 +8,10 @@ import { fileUpload } from "../../Utils/multer.js";
 
 const router = Router();
 router.post(
-    '/team',
+    '/addTeam',
     Authentication,
     Authorization("Researcher"),
-    fileUpload.single('image'),
+    //fileUpload.single('image'),
     validate(TeamSchema.AddTeamSchema),
     TeamController.AddTeam
 );

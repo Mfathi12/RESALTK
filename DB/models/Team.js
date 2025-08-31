@@ -13,15 +13,19 @@ export const TeamSchema=new Schema({
         type:String
     },
     fieldOfResearch:{
-        type:string
+        type:String
     },
     members:[{
-        type:Types.ObjectId,
-        ref: "User"
+        user: { type: Types.ObjectId, ref: "User" },
+        role: { type: String }
     }],
-    projectsAndAchievements:[{
+    projects:[{
         type:Types.ObjectId,
-        ref:"ProjectsAndAchievments"
+        ref:"Project"
+    }],
+    Achievements:[{
+        type:Types.ObjectId,
+        ref:"Achievement"
     }],
     eventsAndNews :[{
         type:Types.ObjectId,
@@ -42,9 +46,6 @@ export const TeamSchema=new Schema({
         type:String,
     },
     requiredSkills:{
-        type:String,
-    },
-    descriptio:{
         type:String,
     },
     image: {
