@@ -2,7 +2,7 @@ import { asyncHandler } from "../../Utils/asyncHandler.js";
 import { Team } from "../../../DB/models/Team.js";
 import { Project } from "../../../DB/models/ProjectsAndAchievements.js";
 
-export const addProject=asyncHandler(async(req,res)=>{
+export const addProject=asyncHandler(async(req,res,next)=>{
 
     const {projectTitle,projectDescription,fieldOfResearch,projectType}=req.body;
     const {teamId}=req.params
@@ -21,7 +21,7 @@ export const addProject=asyncHandler(async(req,res)=>{
     return res.json({message:"project created succefuully",project })
 })
 
-export const addAchievement=asyncHandler(async(req,res)=>{
+export const addAchievement=asyncHandler(async(req,res,next)=>{
 
     const {achievementTitle,achievementDescription,fieldOfResearch}=req.body;
     const {teamId}=req.params

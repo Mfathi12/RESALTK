@@ -16,7 +16,7 @@ export const researcherSchema = Joi.object({
     university: Joi.string().required(),
     degree: Joi.string().required(),
     major: Joi.string().required(),
-    currentYear: Joi.string().required(),
+    currentYear: Joi.string().optional(),
     educationLevel: Joi.string().required(),
 });
 
