@@ -11,8 +11,8 @@ export const addProjectSchema = Joi.object({
 
 export const addAchievement = Joi.object({
     teamId:Joi.string().custom(isValidObjectId).required(),
-    projectTitle: Joi.string().required(),
-    projectDescription: Joi.string().required(),
+    AchievementTitle: Joi.string().required(),
+    AchievementDescription: Joi.string().required(),
     fieldOfResearch: Joi.string().required(),
 }).required();
 
