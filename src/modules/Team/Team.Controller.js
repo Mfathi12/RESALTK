@@ -25,10 +25,20 @@ export const GetTeam=asyncHandler(async(req,res,next)=>{
         if (!team) {
         return next(new Error("team not found"))
     }
-    return res.json({messag:"team created succefuully",team })
+    return res.json({messag:"fetched team",team })
 })
 
-export const GetMemberTeamsSchema=asyncHandler(async(req,res,next)=>{
+export const GetTeams=asyncHandler(async(req,res,next)=>{
+    const teams=await  Team.find().select('teamName description fieldOfResearch teamLeader')
+       //members images
+    if (!teams || teams.length === 0) {
+    return next(new Error("teams not found"))
+} 
+    return res.json({messag:"fetched teams",teams })
+})
+
+
+/* export const GetMemberTeamsSchema=asyncHandler(async(req,res,next)=>{
     const {userId}=req.params
     const user=await User.findById(userId)
     if(user){
@@ -51,4 +61,4 @@ export const UpdateTeamSchema=asyncHandler(async(req,res,next)=>{
     const {name,members,projects}=req.body;
     updateData={};
     //if(name)
-})
+}) */
