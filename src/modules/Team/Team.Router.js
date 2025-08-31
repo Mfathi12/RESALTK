@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as TeamSchema from "./Team.Schema.js";
-import * as TeamController from "./Team.controller.js"
+import * as TeamController from "./Team.Controller.js";
 import { Authorization } from "../../MiddleWare/Authorization.js";
 import { Authentication } from "../../MiddleWare/Authentication.js";
 import { validate } from "../../MiddleWare/Validation.js";

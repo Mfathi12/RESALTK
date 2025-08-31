@@ -16,10 +16,6 @@ export const AddTeamSchema = Joi.object({
             role: Joi.string().optional()
         })
     ).optional(),
-    projects: Joi.array().items(Joi.string()).optional(),
-    Achievements: Joi.array().items(Joi.string()).optional(),
-    eventsAndNews: Joi.array().items(Joi.string()).optional(),
-    services: Joi.array().items(Joi.string()).optional(),
     image: Joi.string().optional()
 }).required();
 
