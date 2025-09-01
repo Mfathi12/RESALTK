@@ -38,12 +38,15 @@ export const GetTeams=asyncHandler(async(req,res,next)=>{
 })
 export const sendJoinRequest = asyncHandler(async (req, res, next) => {
     const {teamId, userId}=req.params;
-    const {name, university, educationLevel, type, degree}=req.body;
+    const {name, university, educationLevel, degree}=req.body;
 
     const team = await Team.findById(teamId);
     if (!team) {
         return next(new Error("Team not found"));
     }  
+    if(team.teamFormation !== "I Need to Hire Members"){
+        return next(new Error("This team is not open to new members"));
+    }
     if (team.teamLeader.toString() === userId) {
     return next(new Error("Team leader cannot send join request to their own team"));
 }
