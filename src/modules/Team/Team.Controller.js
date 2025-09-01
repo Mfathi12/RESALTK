@@ -58,7 +58,7 @@ export const sendJoinRequest = asyncHandler(async (req, res, next) => {
     if (alreadyRequested) {
         return next(new Error("You have already sent a join request to this team"));
     }
-    team.pendingRequests.push({ user: userId, name, university, educationLevel, type, degree });
+    team.pendingRequests.push({ user: userId, name, university, educationLevel, degree });
     await team.save();
     return res.json({ message: "Join request sent successfully" });
 
