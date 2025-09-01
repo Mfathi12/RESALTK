@@ -9,10 +9,9 @@ export const addEvent = asyncHandler(async(req,res,next)=>{
     if (!team) {
         return next(new Error("Team not found"));
     }
-    if(!team.teamLeader.equals(req.user._id))
-    {
-        return next(new Error("only team leader can add Achievement"))
-    }
+        if (team.teamLeader.toString() !== req.user._id.toString()) {
+    return next(new Error("Only the team leader can handle join requests"));}
+
     await Event.create({ eventTitle, eventDescription, eventDate, location, totalPositionNeeded });
     team.Events.push(newEvent._id);
     await team.save();
