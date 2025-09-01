@@ -12,7 +12,7 @@ export const addEvent = asyncHandler(async(req,res,next)=>{
         if (team.teamLeader.toString() !== req.user._id.toString()) {
     return next(new Error("Only the team leader can handle join requests"));}
 
-    await Event.create({ eventTitle, eventDescription, eventDate, location, totalPositionNeeded });
+    const newEvent=await Event.create({ eventTitle, eventDescription, eventDate, location, totalPositionNeeded });
     team.Events.push(newEvent._id);
     await team.save();
     return res.json({ message: "Event added successfully", event: newEvent })
