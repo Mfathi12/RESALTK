@@ -57,7 +57,6 @@ export const TeamSchema = new Schema({
         name: String,
         university: String,
         educationLevel: String,
-        type: Types.ObjectId,
         degree: String,
         major: String,
         cv: String,
