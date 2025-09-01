@@ -51,6 +51,9 @@ export const sendJoinRequest = asyncHandler(async (req, res, next) => {
     if(!user){
         return next(new Error("user not found"))
     }
+    if (team.members.some(member => member.user.toString() === userId)) {
+        return next(new Error("You are already a member of this team"));
+    }
     const alreadyRequested = team.pendingRequests.some(request => request.user.toString() === userId);
     if (alreadyRequested) {
         return next(new Error("You have already sent a join request to this team"));
