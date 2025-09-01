@@ -59,7 +59,7 @@ export const updateNew=asyncHandler(async(req,res,next)=>{
         return next(new Error("new not found"))
     }
 
-    Object.Keys(updates).forEach((key)=>{
+    Object.keys(updates).forEach((key)=>{
         New[key]=updates[key];
     });
     await New.save();
