@@ -1,8 +1,6 @@
-import { Team } from "../../../DB/models/Team";
-import { Event } from "../../../DB/models/EventsAndNews";
-import { News } from "../../../DB/models/EventsAndNews";
-
-import { asyncHandler } from "../../Utils/asyncHandler";
+import { Team } from "../../../DB/models/Team.js";
+import { Event, News} from "../../../DB/models/EventsAndNews.js";
+import { asyncHandler } from "../../Utils/asyncHandler.js";
 
 export const addEvent = asyncHandler(async(req,res,next)=>{
     const { teamId } = req.params;

@@ -8,9 +8,9 @@ const router=Router();
 
 router.post('/addEvent/:teamId',Authentication,Authorization("Researcher"),validate(EventsAndNewsSchema.addEventSchema),EventsAndNewsController.addEvent);
 router.post('/addNews',Authentication,Authorization("admin"),validate(EventsAndNewsSchema.addNewsSchema),EventsAndNewsController.addNews);
-router.get('/getAllEvents',Authentication,("Researcher"),EventsAndNewsController.getAllEvents);
-router.get('/getAllNews',Authentication,("Researcher","admin","Service Provider","company"),EventsAndNewsController.getAllNews);
-router.get('/:eventId',Authentication,("Researcher"),validate(EventsAndNewsSchema.getEventSchema),EventsAndNewsController.getEvent);
-router.post('/:newId',Authentication,("admin"),validate(EventsAndNewsSchema.updateNewSchema),EventsAndNewsController.updateNew);
+router.get('/getAllEvents',Authentication,Authorization("Researcher"),EventsAndNewsController.getAllEvents);
+router.get('/getAllNews',Authentication,Authorization("Researcher","admin","Service Provider","company"),EventsAndNewsController.getAllNews);
+router.get('/:eventId',Authentication,Authorization("Researcher"),validate(EventsAndNewsSchema.getEventSchema),EventsAndNewsController.getEvent);
+router.post('/:newId',Authentication,Authorization("admin"),validate(EventsAndNewsSchema.updateNewSchema),EventsAndNewsController.updateNew);
 
 export default router;
