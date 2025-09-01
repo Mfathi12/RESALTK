@@ -36,6 +36,55 @@ export const GetTeams=asyncHandler(async(req,res,next)=>{
 } 
     return res.json({messag:"fetched teams",teams })
 })
+export const sendJoinRequest = asyncHandler(async (req, res, next) => {
+    const {teamId, userId}=req.params;
+    const {name, university, educationLevel, type, degree}=req.body;
+
+    const team = await Team.findById(teamId);
+    if (!team) {
+        return next(new Error("Team not found"));
+    }  
+    if (team.teamLeader.toString() === userId) {
+    return next(new Error("Team leader cannot send join request to their own team"));
+}
+    const user=await User.findById(userId)
+    if(!user){
+        return next(new Error("user not found"))
+    }
+    const alreadyRequested = team.pendingRequests.some(request => request.user.toString() === userId);
+    if (alreadyRequested) {
+        return next(new Error("You have already sent a join request to this team"));
+    }
+    team.pendingRequests.push({ user: userId, name, university, educationLevel, type, degree });
+    await team.save();
+    return res.json({ message: "Join request sent successfully" });
+
+})
+export const handleJoinRequest = asyncHandler(async (req, res, next) => {
+    const { teamId, requestId } = req.params;
+    const { action } = req.body;
+    const team = await Team.findById(teamId);
+    if (!team) {
+        return next(new Error("Team not found"));
+    }
+    if(team.teamLeader !== req.user._id){
+        return next(new Error("Only the team leader can handle join requests"));
+    }
+    const request = team.pendingRequests.id(requestId);
+    if (!request) {
+        return next(new Error("Join request not found"));
+    }
+    if (action === 'accept') {
+        team.members.push({ user: request.user });
+        request.remove();
+    }else if(action === 'deney'){
+        request.remove();}
+
+    await team.save();
+    return res.json({ message: `Join request ${action}ed successfully` });
+
+
+});
 
 
 /* export const GetMemberTeamsSchema=asyncHandler(async(req,res,next)=>{

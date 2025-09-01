@@ -36,3 +36,19 @@ export const UpdateTeamSchema = Joi.object({
     members: Joi.array().items(Joi.string().custom(isValidObjectId)).optional(),
     projects: Joi.array().items(Joi.string().custom(isValidObjectId)).optional()
 }).required();
+
+export const sendJoinRequestSchema=Joi.object({
+    teamId:Joi.string().custom(isValidObjectId).required(),
+    userId:Joi.string().custom(isValidObjectId).required(), 
+    name:Joi.string().required(),
+    university:Joi.string().required(),
+    educationLevel:Joi.string().required(),
+    major:Joi.string().required(),
+    //cv:Joi.string().required(),
+    degree:Joi.string().required(),
+}).required();
+export const handleJoinRequestSchema=Joi.object({
+    teamId:Joi.string().custom(isValidObjectId).required(),
+    requestId:Joi.string().custom(isValidObjectId).required(),
+    action:Joi.string().valid("accept","deney").required(),
+}).required();

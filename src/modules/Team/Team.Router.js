@@ -7,17 +7,15 @@ import { validate } from "../../MiddleWare/Validation.js";
 //import { fileUpload } from "../../Utils/multer.js";
 
 const router = Router();
-router.post(
-    '/addTeam',
-    Authentication,
-    Authorization("Researcher"),
+router.post('/addTeam',Authentication,Authorization("Researcher"),
     //fileUpload.single('image'),
     validate(TeamSchema.AddTeamSchema),
     TeamController.AddTeam
 );
 router.get('/:teamId',Authentication, validate(TeamSchema.GetTeamSchema),Authorization("Researcher","admin","Service Provider","company"),TeamController.GetTeam)
 router.get('/',Authentication,Authorization("Researcher","admin","Service Provider","company"),TeamController.GetTeams)
-
+router.post('/:teamId/join/:userId',Authentication,Authorization("Researcher"),validate(TeamSchema.sendJoinRequestSchema),TeamController.sendJoinRequest)
+router.post('/:teamId/action/:requestId',Authentication,Authorization("Researcher"),validate(TeamSchema.handleJoinRequestSchema),TeamController.handleJoinRequest)
 //router.get('/:userId',Authentication,Authorization('Researcher') ,validate(TeamSchema.GetMemberTeamsSchema), TeamController.GetMemberTeamsSchema)
 //router.patch('/teamId',Authentication,Authorization('Researcher'),validate(TeamSchema.UpdateTeamSchema),TeamController.GetMemberTeamsSchema.UpdateTeamSchema)
 export default router;

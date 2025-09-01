@@ -1,59 +1,70 @@
 import { model, Schema, Types } from "mongoose";
-export const TeamSchema=new Schema({
+export const TeamSchema = new Schema({
     teamName: {
         type: String,
         required: true
     },
-    teamLeader:{
-        type:Types.ObjectId,
+    teamLeader: {
+        type: Types.ObjectId,
         ref: "User",
         required: true
     },
-    teamLeaderRole:{
-        type:String
+    teamLeaderRole: {
+        type: String
     },
-    fieldOfResearch:{
-        type:String
+    fieldOfResearch: {
+        type: String
     },
-    members:[{
+    members: [{
         user: { type: Types.ObjectId, ref: "User" },
         role: { type: String }
     }],
-    projects:[{
-        type:Types.ObjectId,
-        ref:"Project"
+    projects: [{
+        type: Types.ObjectId,
+        ref: "Project"
     }],
-    Achievements:[{
-        type:Types.ObjectId,
-        ref:"Achievement"
+    Achievements: [{
+        type: Types.ObjectId,
+        ref: "Achievement"
     }],
-    eventsAndNews :[{
-        type:Types.ObjectId,
-        ref:"eventsAndNews" 
+    eventsAndNews: [{
+        type: Types.ObjectId,
+        ref: "eventsAndNews"
     }],
-    services:[{
-        type:Types.ObjectId,
-        ref:"Services" 
+    services: [{
+        type: Types.ObjectId,
+        ref: "Services"
     }],
-    description:{
-        type:String
+    description: {
+        type: String
     },
-    teamFormation:{
-        type:String,
-        enum:["I Have My Team","I Need to Hire Members"]
+    teamFormation: {
+        type: String,
+        enum: ["I Have My Team", "I Need to Hire Members"]
     },
-    jobTitle:{
-        type:String,
+    jobTitle: {
+        type: String,
     },
-    requiredSkills:{
-        type:String,
+    requiredSkills: {
+        type: String,
     },
     image: {
-        type: String 
-    }
+        type: String
+    },
 
-},{
-    timestamps: true 
+    pendingRequests: [{
+        user: { type: Types.ObjectId, ref: "User", },
+        name: String,
+        university: String,
+        educationLevel: String,
+        type: Types.ObjectId,
+        degree: String,
+        major: String,
+        cv: String,
+    }]
+
+}, {
+    timestamps: true
 })
 
-export const Team=model("Team",TeamSchema)
+export const Team = model("Team", TeamSchema)
