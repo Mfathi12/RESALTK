@@ -36,6 +36,7 @@ export const GetTeams=asyncHandler(async(req,res,next)=>{
 } 
     return res.json({messag:"fetched teams",teams })
 })
+
 export const sendJoinRequest = asyncHandler(async (req, res, next) => {
     const {teamId, userId}=req.params;
     const {name, university, educationLevel, degree}=req.body;
@@ -66,6 +67,7 @@ export const sendJoinRequest = asyncHandler(async (req, res, next) => {
     return res.json({ message: "Join request sent successfully" });
 
 })
+
 export const handleJoinRequest = asyncHandler(async (req, res, next) => {
     const { teamId, requestId } = req.params;
     const { action } = req.body;
@@ -73,9 +75,9 @@ export const handleJoinRequest = asyncHandler(async (req, res, next) => {
     if (!team) {
         return next(new Error("Team not found"));
     }
-    if(team.teamLeader !== req.user._id){
-        return next(new Error("Only the team leader can handle join requests"));
-    }
+   if (team.teamLeader.toString() !== req.user._id.toString()) {
+    return next(new Error("Only the team leader can handle join requests"));
+}
     const request = team.pendingRequests.id(requestId);
     if (!request) {
         return next(new Error("Join request not found"));
@@ -88,8 +90,6 @@ export const handleJoinRequest = asyncHandler(async (req, res, next) => {
 
     await team.save();
     return res.json({ message: `Join request ${action}ed successfully` });
-
-
 });
 
 
