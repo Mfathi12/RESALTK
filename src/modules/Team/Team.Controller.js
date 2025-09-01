@@ -84,9 +84,9 @@ export const handleJoinRequest = asyncHandler(async (req, res, next) => {
     }
     if (action === 'accept') {
         team.members.push({ user: request.user });
-        request.remove();
+        request.deleteOne()
     }else if(action === 'deney'){
-        request.remove();}
+        request.deleteOne();}
 
     await team.save();
     return res.json({ message: `Join request ${action}ed successfully` });
