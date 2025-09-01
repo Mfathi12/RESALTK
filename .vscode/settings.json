@@ -1,0 +1,9 @@
+{
+    "editor.quickSuggestions": {
+        "other": "off"
+    },
+    "editor.inlineSuggest.edits.renderSideBySide": "never",
+    "C_Cpp.copilotHover": "disabled",
+    "github.copilot.chat.agent.autoFix": false,
+    "github.copilot.chat.agent.runTasks": true
+}

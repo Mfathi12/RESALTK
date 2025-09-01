@@ -75,7 +75,7 @@ export const handleJoinRequest = asyncHandler(async (req, res, next) => {
     if (!team) {
         return next(new Error("Team not found"));
     }
-   if (team.teamLeader.toString() !== req.user._id.toString()) {
+    if (team.teamLeader.toString() !== req.user._id.toString()) {
     return next(new Error("Only the team leader can handle join requests"));
 }
     const request = team.pendingRequests.id(requestId);

@@ -27,9 +27,13 @@ export const TeamSchema = new Schema({
         type: Types.ObjectId,
         ref: "Achievement"
     }],
-    eventsAndNews: [{
+    Events: [{
         type: Types.ObjectId,
-        ref: "eventsAndNews"
+        ref: "Event"
+    }],
+    News: [{
+        type: Types.ObjectId,
+        ref: "News"
     }],
     services: [{
         type: Types.ObjectId,

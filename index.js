@@ -5,6 +5,7 @@ import UserRouter from './src/modules/User/User.Router.js';
 import services from './src/modules/Services/Services.Router.js';
 import Team from './src/modules/Team/Team.Router.js';
 import ProjectsAndAchievementsRouter from './src/modules/ProjectsAndAchievements/ProjectsAndAchievements.router.js';
+import EventsAndNewsRouter from './src/modules/EventsAndNews/EventsAndNews.Router.js';
 import path from "path"
 import dotenv from 'dotenv';
 dotenv.config();
@@ -14,12 +15,15 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 console.log(process.env.MONGO_URI)
 connectDB();
+
+
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 app.use('/auth', AuthRouter);  
 app.use('/user', UserRouter);
 app.use('/services',services);
 app.use('/team',Team);
 app.use('/ProjectsAndAchievements',ProjectsAndAchievementsRouter);
+app.use('/eventsAndNews',EventsAndNewsRouter);
 
 
 //global error handler
