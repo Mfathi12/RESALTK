@@ -11,6 +11,6 @@ router.post('/addNews',Authentication,Authorization("admin"),validate(EventsAndN
 router.get('/getAllEvents',Authentication,Authorization("Researcher"),EventsAndNewsController.getAllEvents);
 router.get('/getAllNews',Authentication,Authorization("Researcher","admin","Service Provider","company"),EventsAndNewsController.getAllNews);
 router.get('/:eventId',Authentication,Authorization("Researcher"),validate(EventsAndNewsSchema.getEventSchema),EventsAndNewsController.getEvent);
-router.post('/:newId',Authentication,Authorization("admin"),validate(EventsAndNewsSchema.updateNewSchema),EventsAndNewsController.updateNew);
+router.patch('/:newId',Authentication,Authorization("admin"),validate(EventsAndNewsSchema.updateNewSchema),EventsAndNewsController.updateNew);
 
 export default router;
