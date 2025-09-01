@@ -53,6 +53,7 @@ export const getEvent=asyncHandler(async(req,res,next)=>{
 
 export const updateNew=asyncHandler(async(req,res,next)=>{
     const {newId}=req.params;
+    const updates=req.body;
     const New = await News.findById(newId);
     if(!New){
         return next(new Error("new not found"))
