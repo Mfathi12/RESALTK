@@ -166,7 +166,7 @@ export const AssignProviderByAdmin = asyncHandler(async (req, res, next) => {
     if (providers.length !== providerIds.length) {
         return next(new Error ( "One or more providers not found or invalid" ));
     }
-    Service.candidates.push(...providerIds);
+    Service.candidates.push(...providerObjectIds);
     Service.status = "provider-selection";
     await Service.save();
 
