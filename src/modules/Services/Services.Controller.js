@@ -57,7 +57,7 @@ export const AddService = asyncHandler(async (req, res, next) => {
 
 })
 
-//get services by admin in four status depand on query
+//get services by admin in four status depand on query(in progress,new request ....)
 export const GetServicesByAdmin = asyncHandler(async (req, res, next) => {
     const {status}=req.query;
     let filter={};
@@ -102,7 +102,7 @@ export const GetServicesByAdmin = asyncHandler(async (req, res, next) => {
     });
 })
 
-//get all service to spesfic user
+//get all services to spesfic user (team or user)
 export const GetUserServices=asyncHandler(async (req,res,next)=>{
     const {teamId}= req.params;
     const userId=req.user._id;
@@ -132,7 +132,9 @@ export const GetUserServices=asyncHandler(async (req,res,next)=>{
         services
     })
 })
-/* export const GetService = asyncHandler(async (req, res, next) => {
+
+//get specific service 
+export const GetService = asyncHandler(async (req, res, next) => {
 
     const { serviceId } = req.params;
     const service = await Services.findById(serviceId)
@@ -143,7 +145,7 @@ export const GetUserServices=asyncHandler(async (req,res,next)=>{
         message: "service that you required",
         service
     })
-}) */
+}) 
 
 /*
 export const AssignProviderByAdmin = asyncHandler(async (req, res, next) => {

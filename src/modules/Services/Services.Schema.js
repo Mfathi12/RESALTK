@@ -151,6 +151,10 @@ export const GetTeamServices=Joi.object({
     teamId:Joi.string().custom(isValidObjectId).required()
 })
 
+export const getSpecificService=Joi.object({
+    serviceId:Joi.string().custom(isValidObjectId).required()
+})
+
 export const GetSpecificProviders=Joi.object({
     serviceId:Joi.string().custom(isValidObjectId).required()
 }).required()
@@ -164,5 +168,4 @@ export const SetProviderPrice=Joi.object({
 
 export const GetAllProviderRequests=Joi.object({
     providerId:Joi.string().custom(isValidObjectId).required(),
-
 })
