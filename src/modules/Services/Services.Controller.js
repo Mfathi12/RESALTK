@@ -149,7 +149,7 @@ export const GetService = asyncHandler(async (req, res, next) => {
 
 //Get All Providers 
 export const GetProviders=asyncHandler(async(req,res,next)=>{
-    const providers= await User.findAll()
+    const providers= await User.find({ accountType: "Service Provider" })
     return res.json({message:"providers are available",providers})
 
 }) 
