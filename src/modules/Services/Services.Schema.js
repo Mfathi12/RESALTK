@@ -134,6 +134,7 @@ export const validateStatus =Joi.object({
     status: Joi.string()
       .valid("new-request", "in-progress", "completed", "rejected").optional()})
 
+
 export const AssignProviderByAdmin = Joi.object({
     requestId: Joi.string().custom(isValidObjectId).required(),
     providerIds: Joi.array().items(Joi.string().custom(isValidObjectId)).min(1).required(),
@@ -145,9 +146,10 @@ export const SelectProviderByUser = Joi.object({
     providerId: Joi.string().custom(isValidObjectId).required(),
 }).required();
 
-export const GetUserServices=Joi.object({
-    userId:Joi.string().custom(isValidObjectId).required()
-}).required()
+
+export const GetTeamServices=Joi.object({
+    teamId:Joi.string().custom(isValidObjectId).required()
+})
 
 export const GetSpecificProviders=Joi.object({
     serviceId:Joi.string().custom(isValidObjectId).required()

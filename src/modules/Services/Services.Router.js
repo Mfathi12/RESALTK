@@ -10,8 +10,8 @@ const router = Router();
 router.post('/RE/:serviceType',Authentication,Authorization("Researcher"),ServicesSchema.chooseServiceSchema, ServicesController.AddService);
 router.post('/RE/:teamId/:serviceType',Authentication,Authorization("Researcher"),ServicesSchema.chooseServiceSchema, ServicesController.AddService);
 router.get('/admin',Authentication,Authorization("admin"),validate(ServicesSchema.validateStatus),ServicesController.GetServicesByAdmin)
-router.get('/RE/Services',Authentication,Authorization("Researcher"),validate(ServicesSchema.GetUserServices),ServicesController.GetUserServices)
-router.post('/RE/:teamId/Services',Authentication,Authorization("Researcher"),ServicesSchema.chooseServiceSchema, ServicesController.AddService);
+router.get('/RE/Services',Authentication,Authorization("Researcher"),ServicesController.GetUserServices)
+router.post('/RE/:teamId/Services',Authentication,Authorization("Researcher"),validate(ServicesSchema.GetTeamServices), ServicesController.AddService);
 
 /* router.get('/:serviceId',Authentication,ServicesController.GetService)
 router.patch('/admin/assign-provider/:requestId', Authentication, Authorization("admin"),validate(ServicesSchema.AssignProviderByAdmin),ServicesController.AssignProviderByAdmin);
