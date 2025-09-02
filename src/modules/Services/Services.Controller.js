@@ -113,14 +113,17 @@ export const GetUserServices=asyncHandler(async (req,res,next)=>{
         if(!team){
             return next (new Error("team not found"))
         }
-        services= team.services;
+         services = await Services.find({ _id: { $in: team.services } })
+            .select('requestName serviceType status description deadline details');
+    
     }else{
         const user=await User.findById(userId)
     if(!user)
     {
         return next(new Error("User not found"))
     }
-    services=await Services.find({ownerId:userId})
+    services=await Services.find({ownerId:userId}) 
+    .select('requestName serviceType status description deadline');
     }
     
     return res.json({
