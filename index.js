@@ -1,5 +1,5 @@
 import express from 'express';
-import {connectDB} from './DB/connection.js';
+import { connectDB } from './DB/connection.js';
 import AuthRouter from './src/modules/Auth/Auth.Route.js';
 import UserRouter from './src/modules/User/User.Router.js';
 import services from './src/modules/Services/Services.Router.js';
@@ -10,7 +10,7 @@ import path from "path"
 import dotenv from 'dotenv';
 dotenv.config();
 
-const app = express();  
+const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.json());
 console.log(process.env.MONGO_URI)
@@ -18,27 +18,26 @@ connectDB();
 
 
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
-app.use('/auth', AuthRouter);  
+app.use('/auth', AuthRouter);
 app.use('/user', UserRouter);
-app.use('/services',services);
-app.use('/team',Team);
-app.use('/ProjectsAndAchievements',ProjectsAndAchievementsRouter);
-app.use('/eventsAndNews',EventsAndNewsRouter);
+app.use('/services', services);
+app.use('/team', Team);
+app.use('/ProjectsAndAchievements', ProjectsAndAchievementsRouter);
+app.use('/eventsAndNews', EventsAndNewsRouter);
 
 
 //global error handler
-/* app.use((err,req,res,next)=>{
+/* app.use((err, req, res, next) => { 
     const statusCode = err.statusCode || 500;
-    res.status(statusCode).send({message: err.message, stack: err.stack});
-}) */
+    res.status(statusCode).json({ message: err.message, stack: err.stack }); 
+    }) */
+
 app.use((err, req, res, next) => {
-  const statusCode = err.statusCode || 500;
+const statusCode = err.statusCode || 500;
 
-  // يطبع التفاصيل الكاملة في الـ console بس
-  console.error("Error:", err);
+console.error("Error:", err);
 
-  // يبعته للـ client بشكل نظيف
-  res
+res
     .status(statusCode)
     .send(`Error: ${err.message}`);
 });
