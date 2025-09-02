@@ -155,9 +155,7 @@ export const getSpecificService=Joi.object({
     serviceId:Joi.string().custom(isValidObjectId).required()
 })
 
-export const GetSpecificProviders=Joi.object({
-    serviceId:Joi.string().custom(isValidObjectId).required()
-}).required()
+
 
 export const SetProviderPrice=Joi.object({
     providerId:Joi.string().custom(isValidObjectId).required(),

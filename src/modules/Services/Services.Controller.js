@@ -147,7 +147,13 @@ export const GetService = asyncHandler(async (req, res, next) => {
     })
 }) 
 
-/*
+//Get All Providers 
+export const GetProviders=asyncHandler(async(req,res,next)=>{
+    const providers= await User.findAll()
+    return res.json({message:"providers are available",providers})
+
+}) 
+
 export const AssignProviderByAdmin = asyncHandler(async (req, res, next) => {
     const {requestId}=req.params;
     const {providerIds }=req.body;
@@ -177,7 +183,7 @@ export const AssignProviderByAdmin = asyncHandler(async (req, res, next) => {
     });
 
 })
-
+/*
 export const SetProviderPrice = asyncHandler(async (req, res, next) => {
     const { providerId, requestId } = req.params;
     const { price } = req.body;
@@ -193,17 +199,7 @@ export const SetProviderPrice = asyncHandler(async (req, res, next) => {
     return res.json({ message: "Price updated successfully", entry });
 })
 
-export const GetSpecificProviders=asyncHandler(async(req,res,next)=>{
-    const {serviceId} =req.params
-    const service =await Services.findById(serviceId)
-    if(!service)
-    {
-        return next(new Error('service not found'))
-    }
-    const providers= await User.find({service:service.serviceType})
-    return res.json({message:"providers are available",providers})
 
-}) 
 
 export const getprovidersAssigned=asyncHandler(async(req,res,next)=>{
     const {serviceId}=req.params;
