@@ -27,12 +27,12 @@ app.use('/eventsAndNews', EventsAndNewsRouter);
 
 
 //global error handler
-/* app.use((err, req, res, next) => { 
+app.use((err, req, res, next) => { 
     const statusCode = err.statusCode || 500;
     res.status(statusCode).json({ message: err.message, stack: err.stack }); 
-    }) */
+    })
 
-app.use((err, req, res, next) => {
+/* app.use((err, req, res, next) => {
 const statusCode = err.statusCode || 500;
 
 console.error("Error:", err);
@@ -40,7 +40,7 @@ console.error("Error:", err);
 res
     .status(statusCode)
     .send(`Error: ${err.message}`);
-});
+}); */
 
 
 //app.listen(PORT , console.log(`Server is running on port ${PORT}`));
