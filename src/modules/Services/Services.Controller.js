@@ -56,8 +56,44 @@ export const AddService = asyncHandler(async (req, res, next) => {
 
 })
 
-export const GetAllServices = asyncHandler(async (req, res, next) => {
-    const services  = await Services.find().populate('userId', 'name email').populate('providerId', 'name email');
+export const GetServicesByAdmin = asyncHandler(async (req, res, next) => {
+    const {status}=req.query;
+    let filter={};
+    if(filter)
+        filter.status=status;
+    let projection = {}; 
+    let populateOptions = [];
+    switch(status){
+        case "new-request":
+        projection={requestName:1,serviceType:1,ownerId:1}
+        case "provider-selection":
+        projection={requestName:1,serviceType:1,ownerId:1}
+        case "in-progress":
+      projection = { requestName: 1, serviceType: 1, deadline: 1, createdAt: 1 };
+      break;
+          case "completed":
+      projection = { requestName: 1, serviceType: 1, selectedProvider: 1, updatedAt: 1 };
+      populateOptions = [{ path: "selectedProvider", select: "name email" }];
+      break;
+
+    default:
+      projection = {}; 
+
+    }
+    let query =Services.find(filter,projection)
+    if(populateOptions.length>0){
+        populateOptions.forEach((p)=>{
+            query=query.populate(p);
+        });
+    }
+
+    const services=await query;
+      if (status === "in-progress") {
+    services.forEach((s) => {
+      s = s.toObject();
+      s.durationDays = Math.ceil((new Date(s.deadline) - new Date(s.createdAt)) / (1000 * 60 * 60 * 24));
+    });
+  }
     return res.json({
         message: "All Services requests",
         services 

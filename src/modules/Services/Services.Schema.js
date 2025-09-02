@@ -130,6 +130,10 @@ export const chooseServiceSchema= (req, res, next) => {
     return validate(schema)(req, res, next);
 }
 
+export const validateStatus =Joi.object({
+    status: Joi.string()
+      .valid("new-request", "in-progress", "completed", "rejected").optional()})
+
 export const AssignProviderByAdmin = Joi.object({
     requestId: Joi.string().custom(isValidObjectId).required(),
     providerIds: Joi.array().items(Joi.string().custom(isValidObjectId)).min(1).required(),

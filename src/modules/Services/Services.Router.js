@@ -9,9 +9,9 @@ const router = Router();
 
 router.post('/RE/:serviceType',Authentication,Authorization("Researcher"),ServicesSchema.chooseServiceSchema, ServicesController.AddService);
 router.post('/RE/:teamId/:serviceType',Authentication,Authorization("Researcher"),ServicesSchema.chooseServiceSchema, ServicesController.AddService);
+router.get('/admin',Authentication,Authorization("admin"),validate(ServicesSchema.validateStatus),ServicesController.GetServicesByAdmin)
 
-/* router.get('/admin',Authentication,Authorization("admin"),ServicesController.GetAllServices)
-router.get('/:serviceId',Authentication,ServicesController.GetService)
+/* router.get('/:serviceId',Authentication,ServicesController.GetService)
 router.get('/user/:userId/services',Authentication,Authorization("Researcher"),validate(ServicesSchema.GetUserServices),ServicesController.GetUserServices)
 router.patch('/admin/assign-provider/:requestId', Authentication, Authorization("admin"),validate(ServicesSchema.AssignProviderByAdmin),ServicesController.AssignProviderByAdmin);
 router.get('/admin/:serviceId/specific-providers', Authentication, Authorization("admin"),validate(ServicesSchema.GetSpecificProviders),ServicesController.GetSpecificProviders);
@@ -20,3 +20,4 @@ router.get('/admin/:requestId/providersAssigned',Authentication,Authorization("a
 router.post('/RE/:userId/select-provider/:requestId', Authentication, Authorization("Researcher"),validate(ServicesSchema.SelectProviderByUser),ServicesController.SelectProviderByUser);
 router.get('/provider/:providerId/allRequests',Authentication,Authorization("Service Provider"),validate(ServicesSchema.GetAllProviderRequests),ServicesController.GetAllProviderRequests);
  */export default router;
+    
