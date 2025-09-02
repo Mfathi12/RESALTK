@@ -12,7 +12,7 @@ router.post('/RE/:teamId/:serviceType',Authentication,Authorization("Researcher"
 router.get('/admin',Authentication,Authorization("admin"),validate(ServicesSchema.validateStatus),ServicesController.GetServicesByAdmin)
 router.get('/RE/Services',Authentication,Authorization("Researcher"),ServicesController.GetUserServices)
 router.get('/RE/:teamId/Services',Authentication,Authorization("Researcher"),validate(ServicesSchema.GetTeamServices), ServicesController.GetUserServices);
-router.get('/:serviceId',Authentication,ServicesController.GetService)
+router.get('/:serviceId',Authentication,validate(ServicesSchema.getSpecificService), ServicesController.GetService)
 /*
 router.patch('/admin/assign-provider/:requestId', Authentication, Authorization("admin"),validate(ServicesSchema.AssignProviderByAdmin),ServicesController.AssignProviderByAdmin);
 router.get('/admin/:serviceId/specific-providers', Authentication, Authorization("admin"),validate(ServicesSchema.GetSpecificProviders),ServicesController.GetSpecificProviders);
