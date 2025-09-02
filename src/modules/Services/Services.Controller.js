@@ -1,17 +1,36 @@
 import { User } from "../../../DB/models/User.js";
+import { Team } from "../../../DB/models/Team.js";
+
 import mongoose from "mongoose";
 import { asyncHandler } from "../../Utils/asyncHandler.js";
 import { Services } from "../../../DB/models/Services.js";
 import { WaitingProviders } from "../../../DB/models/WaitingProviders.js";
 
 export const AddService = asyncHandler(async (req, res, next) => {
-    const { userId, serviceType } = req.params;
+    const { teamId, serviceType } = req.params;
+    const userId=req.user._id;
+
+    let ownerType="user";
+    let ownerId=userId;
+
     const user = await User.findById(userId);
     if (!user) {
         return next(new Error("User not found"));
     }
+            if(teamId){
+        const team=await Team.findById(teamId)
+        if(!team){
+            return next(new Error("team not found"))
+        }
+            if (!team.teamLeader.equals(userId)) {
+            return next(new Error("Only team leader can request service for the team"));
+    }
+    ownerType="team";
+    ownerId=teamId;
+
+    }
     const ServiceData = {
-        userId,
+        ownerId,
         serviceType,
         requestName: req.body.requestName,
         uploadFile: req.body.uploadFile,
@@ -21,13 +40,17 @@ export const AddService = asyncHandler(async (req, res, next) => {
         details: req.body.details || {}
     };
     const Service = await Services.create(ServiceData);
-
-    await User.findByIdAndUpdate(
+    if(ownerType === "user")
+{ await User.findByIdAndUpdate(
         userId,
         { $push: { services: { name: Service.serviceType } } }
-    );
+    );}
+
+    if(ownerType==="team"){
+    await Team.findByIdAndUpdate(teamId, { $push: { services: Service._id } });
+    }
     return res.json({
-        message: "Grammar check request added successfully",
+        message: "service request added successfully",
         Service
     })
 
@@ -41,7 +64,7 @@ export const GetAllServices = asyncHandler(async (req, res, next) => {
     });
 })
 
-export const GetService = asyncHandler(async (req, res, next) => {
+/* export const GetService = asyncHandler(async (req, res, next) => {
 
     const { serviceId } = req.params;
     const service = await Services.findById(serviceId)
@@ -172,7 +195,7 @@ export const GetAllProviderRequests=asyncHandler(async (req,res,next)=>{
     }
     const services=await Services.find({providerId})
     return res.json({message:"services",services})
-})
+}) */
 
 
 

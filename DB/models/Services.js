@@ -1,7 +1,7 @@
 import { model, Schema, Types } from "mongoose";
 
 export const ServicesSchema = new Schema({
-    userId: {
+    ownerId: {
         type:Types.ObjectId,
         ref: "User",
     },

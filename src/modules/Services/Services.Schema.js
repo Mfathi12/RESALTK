@@ -2,7 +2,8 @@ import Joi from "joi";
 import { validate , isValidObjectId } from "../../MiddleWare/Validation.js";
 
 export const baseSchema ={
-    userId: Joi.string().custom(isValidObjectId).required(),
+    ownerId: Joi.string().custom(isValidObjectId).required(),
+    teamOId:Joi.string().custom(isValidObjectId).optional(),
     requestName: Joi.string().required(),
     description: Joi.string(),
     deadline: Joi.date().required(),
