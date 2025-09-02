@@ -6,6 +6,7 @@ import { asyncHandler } from "../../Utils/asyncHandler.js";
 import { Services } from "../../../DB/models/Services.js";
 import { WaitingProviders } from "../../../DB/models/WaitingProviders.js";
 
+//request service by researcher or by teamLeader
 export const AddService = asyncHandler(async (req, res, next) => {
     const { teamId, serviceType } = req.params;
     const userId=req.user._id;
@@ -17,7 +18,7 @@ export const AddService = asyncHandler(async (req, res, next) => {
     if (!user) {
         return next(new Error("User not found"));
     }
-            if(teamId){
+    if(teamId){
         const team=await Team.findById(teamId)
         if(!team){
             return next(new Error("team not found"))
@@ -56,6 +57,7 @@ export const AddService = asyncHandler(async (req, res, next) => {
 
 })
 
+//get services by admin in four status depand on query
 export const GetServicesByAdmin = asyncHandler(async (req, res, next) => {
     const {status}=req.query;
     let filter={};
@@ -100,6 +102,33 @@ export const GetServicesByAdmin = asyncHandler(async (req, res, next) => {
     });
 })
 
+//get all service to spesfic user
+export const GetUserServices=asyncHandler(async (req,res,next)=>{
+    const {teamId}= req.params;
+    const userId=req.user._id;
+    let services=[];
+     if(teamId)
+    {
+        const team =await Team.findById(teamId)
+        if(!team){
+            return next (new Error("team not found"))
+        }
+        services= team.services;
+    }else{
+        const user=await User.findById(userId)
+    if(!user)
+    {
+        return next(new Error("User not found"))
+    }
+    services=await Services.find({ownerId:userId})
+    }
+    
+    return res.json({
+        message:"User services retrieved successfully",
+        count: services.length,
+        services
+    })
+})
 /* export const GetService = asyncHandler(async (req, res, next) => {
 
     const { serviceId } = req.params;
@@ -111,23 +140,9 @@ export const GetServicesByAdmin = asyncHandler(async (req, res, next) => {
         message: "service that you required",
         service
     })
-})
+}) */
 
-export const GetUserServices=asyncHandler(async (req,res,next)=>{
-    const {userId}= req.params;
-    const user=await User.findById(userId)
-    if(!user)
-    {
-        return next(new Error("User not found"))
-    }
-    const services=await Services.find({userId})
-    return res.json({
-        message:"User services retrieved successfully",
-        count: services.length,
-        services
-    })
-})
-
+/*
 export const AssignProviderByAdmin = asyncHandler(async (req, res, next) => {
     const {requestId}=req.params;
     const {providerIds }=req.body;
@@ -238,3 +253,4 @@ export const GetAllProviderRequests=asyncHandler(async (req,res,next)=>{
 
 
 
+    
