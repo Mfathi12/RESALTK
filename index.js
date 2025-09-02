@@ -29,7 +29,7 @@ app.use('/eventsAndNews',EventsAndNewsRouter);
 //global error handler
 app.use((err,req,res,next)=>{
     const statusCode = err.statusCode || 500;
-    res.status(statusCode).json({message: err.message, stack: err.stack});
+    res.status(statusCode).send({message: err.message, stack: err.stack});
 })
 
 //app.listen(PORT , console.log(`Server is running on port ${PORT}`));

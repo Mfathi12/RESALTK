@@ -7,7 +7,7 @@ import { Authorization } from "../../MiddleWare/Authorization.js";
 
 const router = Router();
 
-router.post('/RE/:userId/:serviceType',Authentication,ServicesSchema.chooseServiceSchema, ServicesController.AddService);
+router.post('/RE/:userId/:serviceType',Authentication,Authorization("Researcher"),ServicesSchema.chooseServiceSchema, ServicesController.AddService);
 router.get('/admin',Authentication,Authorization("admin"),ServicesController.GetAllServices)
 router.get('/:serviceId',Authentication,ServicesController.GetService)
 router.get('/user/:userId/services',Authentication,Authorization("Researcher"),validate(ServicesSchema.GetUserServices),ServicesController.GetUserServices)
