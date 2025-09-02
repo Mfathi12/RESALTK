@@ -33,10 +33,16 @@ app.use('/eventsAndNews',EventsAndNewsRouter);
 }) */
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
+
+  // يطبع التفاصيل الكاملة في الـ console بس
+  console.error("Error:", err);
+
+  // يبعته للـ client بشكل نظيف
   res
     .status(statusCode)
-    .send(`message: ${err.message}\nstack: ${err.stack}`);
+    .send(`Error: ${err.message}`);
 });
+
 
 //app.listen(PORT , console.log(`Server is running on port ${PORT}`));
 export default app;
