@@ -159,7 +159,7 @@ export const getSpecificService=Joi.object({
 
 export const SetProviderPrice=Joi.object({
     providerId:Joi.string().custom(isValidObjectId).required(),
-    serviceId:Joi.string().custom(isValidObjectId).required(),
+    requestId:Joi.string().custom(isValidObjectId).required(),
     price:Joi.string().required()
 
 }).required()
