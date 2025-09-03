@@ -189,19 +189,20 @@ export const SetProviderPrice = asyncHandler(async (req, res, next) => {
     const { providerId, requestId } = req.params;
     const { price } = req.body;
 
- const entry = await WaitingProviders.findOne({
-    providerId: new mongoose.Types.ObjectId(providerId),
-    requestId: new mongoose.Types.ObjectId(requestId)
-});
-        if (!entry) {
-        return next(new Error("No assignment found for this provider and request", { cause: 404 }));
+    const entry = await WaitingProviders.findOne({
+        providerId: new mongoose.Types.ObjectId(providerId),
+        requestId: new mongoose.Types.ObjectId(requestId)
+    });
+
+    if (!entry) {
+        return next(new Error("No assignment found for this provider and request"));
     }
 
     entry.price = price;
     await entry.save();
 
     return res.json({ message: "Price updated successfully", entry });
-})
+});
 /*
 export const getprovidersAssigned=asyncHandler(async(req,res,next)=>{
     const {serviceId}=req.params;
