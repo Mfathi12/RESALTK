@@ -227,9 +227,9 @@ export const SelectProviderByUser = asyncHandler(async (req, res, next) => {
     if (!Service) {
         return next(new Error ( "Service not found" ,{cause:404}));
     }  
-    if (Service.userId.toString() !== userId) {
-        return next(new Error ( "Unauthorized action" ,{cause:403}));
-    }
+   if (Service.ownerId.toString() !== userId) {
+    return next(new Error("Unauthorized action", { cause: 403 }));
+}
     if (!Service.candidates.includes(providerId)) {
         return next(new Error ( "Selected provider is not in the candidate list" ,{cause:400}));
     }
