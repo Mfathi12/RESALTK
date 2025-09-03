@@ -167,3 +167,8 @@ export const SetProviderPrice=Joi.object({
 export const GetAllProviderRequests=Joi.object({
     providerId:Joi.string().custom(isValidObjectId).required(),
 })
+
+export const getprovidersAssigned=Joi.object({
+    requestId:Joi.string().custom(isValidObjectId).required(),
+})
+

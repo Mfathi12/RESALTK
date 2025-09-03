@@ -184,7 +184,6 @@ const waitingEntries = providerObjectIds.map(id => ({
 
 })
 
-
 export const SetProviderPrice = asyncHandler(async (req, res, next) => {
     const { requestId, providerId } = req.params;
     const { price } = req.body;
@@ -201,9 +200,10 @@ export const SetProviderPrice = asyncHandler(async (req, res, next) => {
     entry.price = price;
     await entry.save();
 
-    return res.json({ message: "Price updated successfully", entry });
+    return res.json({ message: "Price added successfully", entry });
 });
-/*
+
+//get provider assigened to service to user
 export const getprovidersAssigned=asyncHandler(async(req,res,next)=>{
     const {serviceId}=req.params;
     const service =await Services.findById(serviceId)
@@ -218,7 +218,7 @@ export const getprovidersAssigned=asyncHandler(async(req,res,next)=>{
     return res.json({message:"provider assigned for this Services",providersAssigned})
 
 
-})
+}) 
 
 export const SelectProviderByUser = asyncHandler(async (req, res, next) => {
     const {userId, requestId}=req.params;
@@ -250,7 +250,7 @@ export const GetAllProviderRequests=asyncHandler(async (req,res,next)=>{
     }
     const services=await Services.find({providerId})
     return res.json({message:"services",services})
-}) */
+}) 
 
 
 
