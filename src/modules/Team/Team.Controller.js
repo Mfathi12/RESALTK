@@ -8,7 +8,7 @@ export const AddTeam=asyncHandler(async(req,res,next)=>{
     }
 
     req.body.teamLeader = req.user._id;
-    const existingTeam = await Team.findOne({ name: req.body.name });
+    const existingTeam = await Team.findOne({ name: req.body.teamName });
     if (existingTeam) {
         return next(new Error("team already exists"));
     }
