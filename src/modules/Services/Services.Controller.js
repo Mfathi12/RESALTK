@@ -186,7 +186,7 @@ const waitingEntries = providerObjectIds.map(id => ({
 
 
 export const SetProviderPrice = asyncHandler(async (req, res, next) => {
-    const { providerId, requestId } = req.params;
+    const { requestId, providerId } = req.params;
     const { price } = req.body;
 
     const entry = await WaitingProviders.findOne({
