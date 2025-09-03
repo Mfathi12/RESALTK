@@ -11,7 +11,7 @@ export const ServicesSchema = new Schema({
         ref: "User",
     },
 
-        serviceType: {
+    serviceType: {
         type: String,
         required: true,
         enum: [

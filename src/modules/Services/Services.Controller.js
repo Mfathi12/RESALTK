@@ -183,7 +183,8 @@ export const AssignProviderByAdmin = asyncHandler(async (req, res, next) => {
     });
 
 })
-/*
+
+
 export const SetProviderPrice = asyncHandler(async (req, res, next) => {
     const { providerId, requestId } = req.params;
     const { price } = req.body;
@@ -198,9 +199,7 @@ export const SetProviderPrice = asyncHandler(async (req, res, next) => {
 
     return res.json({ message: "Price updated successfully", entry });
 })
-
-
-
+/*
 export const getprovidersAssigned=asyncHandler(async(req,res,next)=>{
     const {serviceId}=req.params;
     const service =await Services.findById(serviceId)
