@@ -221,7 +221,8 @@ export const getprovidersAssigned=asyncHandler(async(req,res,next)=>{
 }) 
 
 export const SelectProviderByUser = asyncHandler(async (req, res, next) => {
-    const { userId, requestId } = req.params;
+    const { requestId } = req.params;
+    const userId=req.user._id;
     const { providerId } = req.body;
     const Service = await Services.findById(requestId);
     if (!Service) {
