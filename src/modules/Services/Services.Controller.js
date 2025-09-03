@@ -221,17 +221,20 @@ export const getprovidersAssigned=asyncHandler(async(req,res,next)=>{
 }) 
 
 export const SelectProviderByUser = asyncHandler(async (req, res, next) => {
-    const {userId, requestId}=req.params;
-    const {providerId}=req.body;
-    const Service= await Services.findById(requestId);
+    const { userId, requestId } = req.params;
+    const { providerId } = req.body;
+    const Service = await Services.findById(requestId);
     if (!Service) {
-        return next(new Error ( "Service not found" ,{cause:404}));
-    }  
-   if (Service.ownerId.toString() !== userId) {
-    return next(new Error("Unauthorized action", { cause: 403 }));
-}
-    if (!Service.candidates.includes(providerId)) {
-        return next(new Error ( "Selected provider is not in the candidate list" ,{cause:400}));
+        return next(new Error("Service not found", { cause: 404 }));
+    }
+    if (!Service.ownerId) {
+        return next(new Error("Service owner not found"));
+    }
+    if (Service.ownerId.toString() !== userId) {
+        return next(new Error("Unauthorized action", { cause: 403 }));
+    }
+    if (!Service.candidates.map(id => id.toString()).includes(providerId)) {
+        return next(new Error("Selected provider is not in the candidate list", { cause: 400 }));
     }
     Service.providerId = providerId;
     Service.status = "in-progress";
@@ -239,8 +242,8 @@ export const SelectProviderByUser = asyncHandler(async (req, res, next) => {
     return res.json({
         message: "Provider selected successfully",
         Service
-    }); 
-})
+    });
+});
 
 export const GetAllProviderRequests=asyncHandler(async (req,res,next)=>{
     const {providerId} =req.params;
