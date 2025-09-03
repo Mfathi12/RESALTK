@@ -170,12 +170,12 @@ export const AssignProviderByAdmin = asyncHandler(async (req, res, next) => {
     Service.status = "provider-selection";
     await Service.save();
 
-    const waitingEntries = providerIds.map(id => ({
-        requestId,
-        providerId: id
-    }));
+const waitingEntries = providerObjectIds.map(id => ({
+    requestId: new mongoose.Types.ObjectId(requestId),
+    providerId: id
+}));
 
-    const waitingProviders =await WaitingProviders.insertMany(waitingEntries);
+    const waitingProviders = await WaitingProviders.insertMany(waitingEntries);
     return res.json({
         message: "Providers assigned successfully",
         waitingProviders ,
@@ -189,10 +189,10 @@ export const SetProviderPrice = asyncHandler(async (req, res, next) => {
     const { providerId, requestId } = req.params;
     const { price } = req.body;
 
-   const entry = await WaitingProviders.findOne({
-        providerId: new mongoose.Types.ObjectId(providerId),
-        requestId: new mongoose.Types.ObjectId(requestId)
-    });
+ const entry = await WaitingProviders.findOne({
+    providerId: new mongoose.Types.ObjectId(providerId),
+    requestId: new mongoose.Types.ObjectId(requestId)
+});
         if (!entry) {
         return next(new Error("No assignment found for this provider and request", { cause: 404 }));
     }
