@@ -141,10 +141,8 @@ export const AssignProviderByAdmin = Joi.object({
 }).required();
 
 export const SelectProviderByUser = Joi.object({
-    userId: Joi.string().custom(isValidObjectId).required(),
-    requestId: Joi.string().custom(isValidObjectId).required(),
-    providerId: Joi.string().custom(isValidObjectId).required(),
-}).required();
+  providerId: Joi.string().required()
+});
 
 
 export const GetTeamServices=Joi.object({
