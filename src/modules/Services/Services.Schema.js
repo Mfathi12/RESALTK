@@ -169,6 +169,6 @@ export const GetAllProviderRequests=Joi.object({
 })
 
 export const getprovidersAssigned=Joi.object({
-    requestId:Joi.string().custom(isValidObjectId).required(),
+    serviceId:Joi.string().custom(isValidObjectId).required(),
 })
 
