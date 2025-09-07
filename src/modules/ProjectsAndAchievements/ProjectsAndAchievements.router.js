@@ -15,7 +15,7 @@ router.get('/:teamId/getAchievements',Authentication,Authorization("Researcher",
 router.get('/:teamId/getProject/:projectId',Authentication,Authorization("Researcher","admin","Service Provider","company"),validate(ProjectsAndAchievementsSchema.getProject),ProjectsAndAchievementsController.getProject)
 router.get('/:teamId/getAchievement/:AchievementId',Authentication,Authorization("Researcher","admin","Service Provider","company"),validate(ProjectsAndAchievementsSchema.getAchievement),ProjectsAndAchievementsController.getAchievement)
 
-router.delete(':teamId/projectId',Authentication,Authorization("Researcher"),validate(ProjectsAndAchievementsSchema.getProject),ProjectsAndAchievementsController.deleteProject)
+router.delete('/:teamId/projectId', Authentication, Authorization("Researcher"), validate(ProjectsAndAchievementsSchema.getProject), ProjectsAndAchievementsController.deleteProject)
 router.delete(':teamId/AchievementId',Authentication,Authorization("Researcher"),validate(ProjectsAndAchievementsSchema.getAchievement),ProjectsAndAchievementsController.deleteAchievement)
 
 export default router;
