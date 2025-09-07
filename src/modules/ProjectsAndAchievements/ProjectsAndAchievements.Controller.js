@@ -106,3 +106,45 @@ export const getAchievement=asyncHandler(async(req,res,next)=>{
     }   
     return res.json({message:"Achievement fetched succefuully",achievement })
 })
+
+export const deleteProject=asyncHandler(async(req,res,next)=>{
+    const {teamId,projectId}= req.params;
+    const team=await Team.findById(teamId);
+    const project=await Project.findById(projectId);
+    if(!team){
+        return next(new Error("team not found"))
+    }
+    if(!project){
+        return next(new Error("project not found"))
+    }
+    if(!team.teamLeader.equals(req.user._id)){
+        return next(new Error("only team leader can delete project"))
+    }
+
+    await Project.findByIdAndDelete(projectId);
+    await Team.findByIdAndUpdate(teamId, {$pull:{projects:projectId}});
+
+    return res.json({message:"project deleted successufuly"})
+})
+
+export const deleteAchievement=asyncHandler(async(req,res,next)=>{
+    const {teamId,AchievementId}= req.params;
+    const team=await Team.findById(teamId);
+    const achievement=await Achievement.findById(AchievementId);
+    if(!team){
+        return next(new Error("team not found"))
+    }
+    if(!achievement){
+        return next(new Error("achievement not found"))
+    }
+    if(!team.teamLeader.equals(req.user._id)){
+        return next(new Error("only team leader can delete achievement"))
+    }
+
+    await Achievement.findByIdAndDelete(AchievementId);
+    await Team.findByIdAndUpdate(teamId, {$pull:{Achievements:AchievementId}});
+
+    return res.json({message:"achievement deleted successufuly"})
+})
+
+
