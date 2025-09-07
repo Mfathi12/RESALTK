@@ -75,6 +75,13 @@ export const UserSchema = new Schema({
         type: [String],  
     }, 
 
+    languages: {
+        type: [String],
+    },
+    tools: {
+        type: [String],
+    },
+
     serviceDescription: {
         type: String,
     },
