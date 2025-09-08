@@ -78,7 +78,7 @@ export const deleteEvent=asyncHandler(async(req,res,next)=>{
     if(!event){
         return next(new Error("Event not found"))
     }
-    if(user.role!=="admin" || user.role!==event.createdBy.toString()){
+    if(user.role!==event.createdBy.toString()){
         return next(new Error("Only admin can delete events or only the creator can delete the event"))
     }
     await event.deleteOne();
