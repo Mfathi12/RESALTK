@@ -92,9 +92,6 @@ export const deleteNew=asyncHandler(async(req,res,next)=>{
     if(!neww){
         return next(new Error("News not found"))
     }
-    if(user.role!=="admin"){
-        return next(new Error("Only admin can delete news"))
-    }
     await neww.remove();
     return res.json({message:"New deleted successfully"})
 })
