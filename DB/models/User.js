@@ -25,7 +25,7 @@ export const UserSchema = new Schema({
     },
     accountType: {
         type: String,
-        enum: ['Researcher', 'Service Provider', 'company','admin', 'doctor'],
+        enum: ['Researcher', 'Service Provider', 'company', 'admin', 'doctor'],
     },
 
     services: [serviceMappingSchema],
@@ -69,22 +69,38 @@ export const UserSchema = new Schema({
     },
     service: {
         type: String,
-    }, 
-    
-    providedServices: { 
+    },
+
+    /*  providedServices: { 
         type: [String],  
-    }, 
+     },  */
+    providedServices: [
+        {
+            serviceName: {
+                type: String,
+                required: true,
+                enum: [
+                    "GrammarCheck",
+                    "Paraphrase",
+                    "Reference",
+                    "Translation",
+                    "ScientificIllustration",
+                    "PowerPoint",
+                    "Word",
+                    "ResearchGuidance",
+                    "AcademicWritingHelp",
+                    "SoftwareToolsAccess",
+                    "ChemicalSuppliers",
+                    "Printing"
+                ]
+            },
+            description: { type: String },
 
-    languages: {
-        type: [String],
-    },
-    tools: {
-        type: [String],
-    },
+            languages: [{ type: String }],
 
-    serviceDescription: {
-        type: String,
-    },
+            tools: [{ type: String }],
+        }
+    ],
 
     paymentMethod: {
         type: String,
@@ -97,10 +113,10 @@ export const UserSchema = new Schema({
     resetPasswordExpires: {
         type: Date,
     },
-profilePic: { 
-    type: String, 
-    default: null 
-}
+    profilePic: {
+        type: String,
+        default: null
+    }
 
 }, { timestamps: true });
 

@@ -21,7 +21,7 @@ export const researcherSchema = Joi.object({
     educationLevel: Joi.string().required(),
 });
 
-// provider schema
+/* // provider schema
 export const providerSchema = Joi.object({
     ...baseSchema,
     educationLevel: Joi.string().required(),
@@ -45,7 +45,56 @@ export const providerSchema = Joi.object({
         otherwise: Joi.forbidden(),
     }),
 
+}); */
+// provider schema
+export const providerSchema = Joi.object({
+  ...baseSchema,
+  educationLevel: Joi.string().required(),
+  university: Joi.string().required(),
+  degree: Joi.string().required(),
+  major: Joi.string().required(),
+
+  providedServices: Joi.array()
+    .items(
+      Joi.object({
+        serviceName: Joi.string()
+          .valid(
+            "GrammarCheck",
+            "Paraphrase",
+            "Reference",
+            "Translation",
+            "ScientificIllustration",
+            "PowerPoint",
+            "Word",
+            "ResearchGuidance",
+            "AcademicWritingHelp",
+            "SoftwareToolsAccess",
+            "ChemicalSuppliers",
+            "Printing"
+          )
+          .required(),
+
+        description: Joi.string().required(),
+
+        // شرط خاص بالـ languages
+        languages: Joi.when("serviceName", {
+          is: Joi.valid("GrammarCheck", "Translation"),
+          then: Joi.array().items(Joi.string()).min(1).required(),
+          otherwise: Joi.forbidden(),
+        }),
+
+        // شرط خاص بالـ tools
+        tools: Joi.when("serviceName", {
+          is: Joi.valid("SoftwareToolsAccess"),
+          then: Joi.array().items(Joi.string()).min(1).required(),
+          otherwise: Joi.forbidden(),
+        }),
+      })
+    )
+    .min(1)
+    .required(),
 });
+
 
 //company schema
 export const companySchema = Joi.object({
