@@ -8,9 +8,11 @@ const router=Router();
 
 router.post('/addEvent/:teamId',Authentication,Authorization("Researcher"),validate(EventsAndNewsSchema.addEventSchema),EventsAndNewsController.addEvent);
 router.post('/addNews',Authentication,Authorization("admin"),validate(EventsAndNewsSchema.addNewsSchema),EventsAndNewsController.addNews);
-router.get('/getAllEvents',Authentication,Authorization("Researcher"),EventsAndNewsController.getAllEvents);
+router.get('/getAllEvents',Authentication,Authorization("Researcher","admin","Service Provider","company"),EventsAndNewsController.getAllEvents);
 router.get('/getAllNews',Authentication,Authorization("Researcher","admin","Service Provider","company"),EventsAndNewsController.getAllNews);
-router.get('/:eventId',Authentication,Authorization("Researcher"),validate(EventsAndNewsSchema.getEventSchema),EventsAndNewsController.getEvent);
+router.get('/:eventId',Authentication,Authorization("Researcher","admin","Service Provider","company"),validate(EventsAndNewsSchema.getEventSchema),EventsAndNewsController.getEvent);
 router.patch('/:newId',Authentication,Authorization("admin"),validate(EventsAndNewsSchema.updateNewSchema),EventsAndNewsController.updateNew);
+router.delete('/:eventId',Authentication,Authorization("Researcher","admin"),validate(EventsAndNewsSchema.deleteEventSchema),EventsAndNewsController.deleteEvent);
+router.delete('/:newId',Authentication,Authorization("admin"),validate(EventsAndNewsSchema.deleteNewSchema),EventsAndNewsController.deleteNew);
 
 export default router;

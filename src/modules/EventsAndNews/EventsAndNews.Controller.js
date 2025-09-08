@@ -1,5 +1,6 @@
 import { Team } from "../../../DB/models/Team.js";
 import { Event, News} from "../../../DB/models/EventsAndNews.js";
+import { Achievement } from "../../../DB/models/ProjectsAndAchievements.js";
 import { asyncHandler } from "../../Utils/asyncHandler.js";
 
 export const addEvent = asyncHandler(async(req,res,next)=>{
@@ -23,14 +24,16 @@ export const addNews= asyncHandler(async(req,res,next)=>{
     const newNews=await News.create({newsTitle,newsDescription,image});
     return res.json({message:"News added successfully",news:newNews}) 
 })
-
+//get all news,events and achievements
 export const getAllNews=asyncHandler(async(req,res,next)=>{
     const news=await News.find();
+    const events=await Event.find();
+    const Achievements=await Achievement.find();
     if(!news ||news.length===0)
     {
         return res.json({message:"no news found"})
     }
-    return res.json({message:"news fetched successfully",news})
+    return res.json({message:"news fetched successfully",news ,events ,Achievements})
 })
 
 export const getAllEvents=asyncHandler(async(req,res,next)=>{
@@ -39,7 +42,7 @@ export const getAllEvents=asyncHandler(async(req,res,next)=>{
     {
         return res.json({message:"no events found"})
     }       
-    return res.json({message:"events fetched successfully",events})
+    return res.json({message:"events fetched successfully",events })
 })
 
 export const getEvent=asyncHandler(async(req,res,next)=>{
@@ -67,5 +70,34 @@ export const updateNew=asyncHandler(async(req,res,next)=>{
 
 
 })
+
+export const deleteEvent=asyncHandler(async(req,res,next)=>{
+    const {eventId}=req.params;
+    const user=req.user;
+    const event=await Event.findById(eventId);
+    if(!event){
+        return next(new Error("Event not found"))
+    }
+    if(user.role!=="admin" || user.role!==event.createdBy.toString()){
+        return next(new Error("Only admin can delete events or only the creator can delete the event"))
+    }
+    await event.remove();
+    return res.json({message:"Event deleted successfully"})
+})
+
+export const deleteNew=asyncHandler(async(req,res,next)=>{
+    const {newId}=req.params;
+    const user=req.user;
+    const neww=await News.findById(newId);
+    if(!neww){
+        return next(new Error("News not found"))
+    }
+    if(user.role!=="admin"){
+        return next(new Error("Only admin can delete news"))
+    }
+    await neww.remove();
+    return res.json({message:"New deleted successfully"})
+})
+
 
 

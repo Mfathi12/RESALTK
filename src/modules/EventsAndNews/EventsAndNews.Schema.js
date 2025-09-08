@@ -26,3 +26,9 @@ export const updateNewSchema = Joi.object({
     newsDescription: Joi.string().optional(),
     image: Joi.string().optional()
 }).required();
+export const deleteNewSchema = Joi.object({
+    newId: Joi.string().custom(isValidObjectId).required()
+})
+export const deleteEventSchema = Joi.object({
+    eventId: Joi.string().custom(isValidObjectId).required()
+})
