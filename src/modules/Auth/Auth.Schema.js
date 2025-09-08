@@ -7,6 +7,7 @@ const baseSchema = {
     password: Joi.string().required().min(6).max(30).required(),
     confirmPassword: Joi.string().required().valid(Joi.ref('password')),
     phone: Joi.string().optional(),
+    nationalId: Joi.string().required(),
     accountType: Joi.string().valid('Researcher', 'Service Provider', 'admin', 'doctor').required(),
 };
 
@@ -23,7 +24,6 @@ export const researcherSchema = Joi.object({
 // provider schema
 export const providerSchema = Joi.object({
     ...baseSchema,
-    nationalId: Joi.string().required(),
     educationLevel: Joi.string().required(),
     university: Joi.string().required(),
     degree: Joi.string().required(),
