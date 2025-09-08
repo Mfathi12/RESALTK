@@ -12,7 +12,7 @@ router.get('/getAllEvents',Authentication,Authorization("Researcher","admin","Se
 router.get('/getAllNews',Authentication,Authorization("Researcher","admin","Service Provider","company"),EventsAndNewsController.getAllNews);
 router.get('/:eventId',Authentication,Authorization("Researcher","admin","Service Provider","company"),validate(EventsAndNewsSchema.getEventSchema),EventsAndNewsController.getEvent);
 router.patch('/:newId',Authentication,Authorization("admin"),validate(EventsAndNewsSchema.updateNewSchema),EventsAndNewsController.updateNew);
-router.delete('/:eventId',Authentication,Authorization("Researcher","admin"),validate(EventsAndNewsSchema.deleteEventSchema),EventsAndNewsController.deleteEvent);
-router.delete('/:newId',Authentication,Authorization("admin"),validate(EventsAndNewsSchema.deleteNewSchema),EventsAndNewsController.deleteNew);
+router.delete('/deleteEvent/:eventId',Authentication,Authorization("Researcher","admin"),validate(EventsAndNewsSchema.deleteEventSchema),EventsAndNewsController.deleteEvent);
+router.delete('/deleteNew/:newId',Authentication,Authorization("admin"),validate(EventsAndNewsSchema.deleteNewSchema),EventsAndNewsController.deleteNew);
 
 export default router;
