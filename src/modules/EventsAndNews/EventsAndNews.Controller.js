@@ -81,7 +81,7 @@ export const deleteEvent=asyncHandler(async(req,res,next)=>{
     if(user.role!=="admin" || user.role!==event.createdBy.toString()){
         return next(new Error("Only admin can delete events or only the creator can delete the event"))
     }
-    await event.remove();
+    await event.deleteOne();
     return res.json({message:"Event deleted successfully"})
 })
 
@@ -92,7 +92,7 @@ export const deleteNew=asyncHandler(async(req,res,next)=>{
     if(!neww){
         return next(new Error("News not found"))
     }
-    await neww.remove();
+    await neww.deleteOne();
     return res.json({message:"New deleted successfully"})
 })
 
