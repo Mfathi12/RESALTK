@@ -49,7 +49,7 @@ export const UserSchema = new Schema({
     },
     educationLevel: {
         type: String,
-        enum: ['Undergraduate (Senior Year)', 'MasPostgraduate (Masters)ter', 'Postgraduate (PHD)', 'Postgraduate (Diploma)'],
+        enum: ['Undergraduate (Senior Year)', 'MasPostgraduate (Masters)ter', 'Postgraduate (PHD)', 'Postgraduate (Diploma)' ,'Other'],
     },
     //provider's Data
     cv: {

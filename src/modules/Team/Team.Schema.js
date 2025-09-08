@@ -15,7 +15,7 @@ export const AddTeamSchema = Joi.object({
             user: Joi.string().custom(isValidObjectId).required(),
             role: Joi.string().optional()
         })
-    ).optional(),
+    ).min(0).max(10).optional(),
     image: Joi.string().optional()
 }).required();
 
