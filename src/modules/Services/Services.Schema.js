@@ -84,7 +84,7 @@ export const printingSchema = Joi.object({
     NumberOfcopies: Joi.number().required()
 })
 
-export const chooseServiceSchema= (req, res, next) => {
+/* export const chooseServiceSchema= (req, res, next) => {
     const { serviceType } = req.body;
     let schema;
     switch (serviceType) {
@@ -128,7 +128,37 @@ export const chooseServiceSchema= (req, res, next) => {
             return next (new Error("Invalid service type"));
     }
     return validate(schema)(req, res, next);
-}
+} */
+export const chooseServiceSchema = (serviceType) => {
+    switch (serviceType) {
+        case "GrammarCheck":
+            return GrammarCheckService;
+        case "Paraphrase":
+            return ParaphraseService;
+        case "Reference":
+            return ReferenceService;
+        case "Translation":
+            return TranslationService;
+        case "ScientificIllustration":
+            return ScientificIllustrationService;
+        case "PowerPoint":
+            return PowerPointService;
+        case "Word":
+            return WordService;
+        case "ResearchGuidance":
+            return ResearchGuidanceService;
+        case "AcademicWritingHelp":
+            return AcademicWritingHelpService;
+        case "SoftwareToolsAccess":
+            return SoftwareToolsAccessService;
+        case "ChemicalSuppliers":
+            return ChemicalSuppliersService;
+        case "Printing":
+            return printingSchema;
+        default:
+            throw new Error("Invalid service type");
+    }
+};
 
 export const validateStatus =Joi.object({
     status: Joi.string()
