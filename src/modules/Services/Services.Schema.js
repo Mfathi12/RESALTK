@@ -6,7 +6,7 @@ export const baseSchema ={
     teamId:Joi.string().custom(isValidObjectId).optional(),
     requestName: Joi.string().required(),
     description: Joi.string(),
-    deadline: Joi.date().required(),
+    deadline: Joi.date(),
     serviceType: Joi.string().valid("GrammarCheck",
         "Paraphrase",
         "Reference",
