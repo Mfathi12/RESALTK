@@ -26,41 +26,18 @@ const PlanSchema = new Schema({
 
     totalPrice: { type: Number, default: 0 },
 
-    deadline: { type: Date, required: true },
+    deadline: { type: Date},
 
     status: {
         type: String,
-        enum: ["new", "provider-selection", "in-progress", "completed"],
+        enum:  ['new-request', 'provider-selection', 'in-progress', 'completed'],
         default: "new"
     }
 }, { timestamps: true });
 
 export const Plan = model("Plan", PlanSchema);
-export const createPlan = asyncHandler(async (req, res, next) => {
-    const { planName, services, deadline } = req.body;
-    const userId = req.user._id;
 
-    // 1. Check services exist
-    const serviceDocs = await Services.find({ _id: { $in: services } });
-    if (serviceDocs.length !== services.length) {
-        return next(new Error("One or more services not found"));
-    }
-
-    // 2. Link services to plan
-    const plan = await Plan.create({
-        userId,
-        planName,
-        services,
-        deadline,
-        status: "new"
-    });
-
-    return res.json({
-        message: "Plan created successfully",
-        plan
-    });
-});
-export const getPlan = asyncHandler(async (req, res, next) => {
+/* export const getPlan = asyncHandler(async (req, res, next) => {
     const { planId } = req.params;
     const plan = await Plan.findById(planId)
         .populate("userId", "name email")
@@ -75,4 +52,4 @@ export const getPlan = asyncHandler(async (req, res, next) => {
         message: "Plan fetched successfully",
         plan
     });
-});
+}); */

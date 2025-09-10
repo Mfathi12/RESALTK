@@ -1,5 +1,6 @@
 import { User } from "../../../DB/models/User.js";
 import { Team } from "../../../DB/models/Team.js";
+import { Plan } from "../../../DB/models/plan.js";
 
 import mongoose from "mongoose";
 import { asyncHandler } from "../../Utils/asyncHandler.js";
@@ -42,7 +43,7 @@ export const AddService = asyncHandler(async (req, res, next) => {
     };
     const Service = await Services.create(ServiceData);
     if(ownerType === "user")
-    { await User.findByIdAndUpdate(
+{ await User.findByIdAndUpdate(
         userId,
         { $push: { services: { name: Service.serviceType } } }
     );}
@@ -56,6 +57,47 @@ export const AddService = asyncHandler(async (req, res, next) => {
     })
 
 })
+//add plan
+export const AddPlan = asyncHandler(async (req, res, next) => {
+    const { planName, services } = req.body;
+    const userId = req.user._id;
+
+    const user = await User.findById(userId);
+    if (!user) return next(new Error("User not found"));
+
+    const plan = await Plan.create({
+        userId,
+        planName,
+        services: [],
+        deadline,
+        status: "new-request"
+    });
+
+    for (const s of services) {
+        // validate data according to type
+        const { error } = chooseServiceSchema(s.serviceType).validate(s);
+        if (error) return next(new Error(error.details[0].message));
+
+        const serviceData = {
+            ownerId: userId,
+            serviceType: s.serviceType,
+            requestName: s.requestName,
+            description: s.description,
+            status: "new-request",
+            details: s.details || {}
+        };
+
+        const service = await Services.create(serviceData);
+        plan.services.push(service._id);
+    }
+
+    await plan.save();
+
+    return res.json({
+        message: "Plan added successfully",
+        plan
+    });
+});
 
 //get services by admin in four status depand on query(in progress,new request ....)
 export const GetServicesByAdmin = asyncHandler(async (req, res, next) => {
@@ -255,3 +297,10 @@ export const GetAllProviderRequests=asyncHandler(async (req,res,next)=>{
     const services=await Services.find({providerId})
     return res.json({message:"services",services})
 }) 
+
+
+
+
+
+
+    

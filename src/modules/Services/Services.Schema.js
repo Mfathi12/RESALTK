@@ -85,7 +85,7 @@ export const printingSchema = Joi.object({
 })
 
 export const chooseServiceSchema= (req, res, next) => {
-    const { serviceType } = req.params;
+    const { serviceType } = req.body;
     let schema;
     switch (serviceType) {
         case "GrammarCheck":

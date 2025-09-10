@@ -26,7 +26,7 @@ export const ServicesSchema = new Schema({
             "AcademicWritingHelp",
             "SoftwareToolsAccess",
             "ChemicalSuppliers",
-            "printing"
+            "Printing"
         ]
     },
 

@@ -21,31 +21,7 @@ export const researcherSchema = Joi.object({
     educationLevel: Joi.string().required(),
 });
 
-/* // provider schema
-export const providerSchema = Joi.object({
-    ...baseSchema,
-    educationLevel: Joi.string().required(),
-    university: Joi.string().required(),
-    degree: Joi.string().required(),
-    //cv: Joi.string().optional(),
-    major: Joi.string().required(),
-    providedServices: Joi.array().items(Joi.string()).min(1).required(),
-    languages: Joi.array().items(Joi.string()).when("providedServices", {
-        is: Joi.array()
-            .items(Joi.string().valid("Grammar Check", "Translate"))
-            .min(1),
-        then: Joi.required(),
-        otherwise: Joi.forbidden(),
-    }),
 
-    // لو Software Tools → لازم tools
-    tools: Joi.array().items(Joi.string()).when("providedServices", {
-        is: Joi.array().items(Joi.string().valid("Software Tools")).min(1),
-        then: Joi.required(),
-        otherwise: Joi.forbidden(),
-    }),
-
-}); */
 // provider schema
 export const providerSchema = Joi.object({
   ...baseSchema,
