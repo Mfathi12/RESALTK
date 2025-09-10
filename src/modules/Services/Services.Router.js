@@ -19,5 +19,12 @@ router.get('/RE/:serviceId/providersAssigned',Authentication,Authorization("Rese
 router.post('/select-provider/:requestId', Authentication, Authorization("Researcher"), ServicesController.SelectProviderByUser);
 router.get('/provider/:providerId/allRequests',Authentication,Authorization("Service Provider"),validate(ServicesSchema.GetAllProviderRequests),ServicesController.GetAllProviderRequests);
 
+
+
+router.post('RE/AddPlan',Authentication,Authorization("Researcher"), ServicesController.AddPlan);
+/* router.get('/admin/Plans',Authentication,Authorization("admin"),ServicesController.GetPlansByAdmin)
+router.get('/RE/Plans',Authentication,Authorization("Researcher"),ServicesController.GetUserPlans)
+router.get('/RE/:teamId/Plans',Authentication,Authorization("Researcher"),validate(ServicesSchema.GetTeamPlans), ServicesController.GetUserPlans);
+router.get('/admin/Providers',Authentication,Authorization("admin"),ServicesController.GetProviders); */
 export default router;
     
