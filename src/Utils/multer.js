@@ -1,4 +1,4 @@
-/* import multer, { diskStorage } from "multer";
+import multer, { diskStorage } from "multer";
 import path from "path";
 
 export const fileUpload = () => {
@@ -28,4 +28,3 @@ export const fileUpload = () => {
 
     return multer({ storage, fileFilter });
 };
- */
