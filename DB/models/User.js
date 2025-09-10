@@ -29,6 +29,10 @@ export const UserSchema = new Schema({
     },
 
     services: [serviceMappingSchema],
+    plan:[{
+        type: Schema.Types.ObjectId,
+        ref: 'Plan'
+    }],
 
     //common data 
     nationalId: {

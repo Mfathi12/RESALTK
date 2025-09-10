@@ -29,7 +29,7 @@ export const GetTeam=asyncHandler(async(req,res,next)=>{
 })
 
 export const GetTeams=asyncHandler(async(req,res,next)=>{
-    const teams=await  Team.find().select('teamName description fieldOfResearch teamLeader')
+    const teams=await Team.find()
        //members images
     if (!teams || teams.length === 0) {
     return next(new Error("teams not found"))

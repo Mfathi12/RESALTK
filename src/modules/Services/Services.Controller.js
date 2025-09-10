@@ -42,7 +42,7 @@ export const AddService = asyncHandler(async (req, res, next) => {
     };
     const Service = await Services.create(ServiceData);
     if(ownerType === "user")
-{ await User.findByIdAndUpdate(
+    { await User.findByIdAndUpdate(
         userId,
         { $push: { services: { name: Service.serviceType } } }
     );}
@@ -255,10 +255,3 @@ export const GetAllProviderRequests=asyncHandler(async (req,res,next)=>{
     const services=await Services.find({providerId})
     return res.json({message:"services",services})
 }) 
-
-
-
-
-
-
-    
