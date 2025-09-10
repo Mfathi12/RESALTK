@@ -34,7 +34,7 @@ export const ServicesSchema = new Schema({
     requestName: { type: String, required: true },
     //uploadFile: { type: String ,required :true},
     description: { type: String},
-    deadline: { type: Date, required: true },
+    deadline: { type: Date},
     status: {
         type: String,
         enum:  ['new-request', 'provider-selection', 'in-progress', 'completed'],
