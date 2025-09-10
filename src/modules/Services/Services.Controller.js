@@ -69,7 +69,6 @@ export const AddPlan = asyncHandler(async (req, res, next) => {
         userId,
         planName,
         services: [],
-        deadline,
         status: "new-request"
     });
 
