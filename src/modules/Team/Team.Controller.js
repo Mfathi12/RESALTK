@@ -105,7 +105,7 @@ export const DeleteTeam = asyncHandler(async (req, res, next) => {
     if (team.teamLeader.toString() === userId) {
         return next(new Error("Team leader cannot send join request to their own team"));
     } 
-    await team.remove();
+   await Team.findByIdAndDelete(teamId);
     return res.json({ messag: "team deleted succefuully", team })
 })
 
