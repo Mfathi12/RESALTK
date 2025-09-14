@@ -256,7 +256,6 @@ export const GetAllProviderRequests=asyncHandler(async (req,res,next)=>{
     return res.json({message:"services",services})
 }) 
 
-
 //add plan
 export const AddPlan = asyncHandler(async (req, res, next) => {
     const { planName, services } = req.body;
@@ -326,26 +325,35 @@ export const GetUserPlans = asyncHandler(async (req, res, next) => {
     });
 });
 
+//assign plan to provider
 export const AssignPlanProviderByAdmin = asyncHandler(async(req,res,next)=>{
-    const {planId}=req.params;
+    const {planId,serviceId}=req.params;
     const {providerIds}=req.body;
-    const plan=await Plan.findById(planId)
+    const plan=await Plan.findById(planId).populate("services");
     if(!plan)
     {
         return next(new Error('plan not found'))
     }
-  const providerObjectIds = providerIds.map(id => new mongoose.Types.ObjectId(id));
+    if (!plan.services.some(s => s._id.toString() === serviceId)) {
+    return next(new Error("Service not part of this plan"));
+    }
+    const service = await Services.findById(serviceId);
+    if (!service) return next(new Error("Service not found"));
+
+    const providerObjectIds = providerIds.map(id => new mongoose.Types.ObjectId(id));
     const providers = await User.find({ _id: { $in: providerObjectIds }, accountType: "Service Provider" });
     if (providers.length !== providerIds.length) {
         return next(new Error ( "One or more providers not found or invalid" ));
     }    
-    plan.candidates.push(...providerObjectIds);
-    plan.status="provider-selection"
-    await plan.save();
+    service.candidates.push(...providerObjectIds);
+    service.status = "provider-selection";
+    await service.save();
+
     const waitingEntries = providerObjectIds.map(id => ({
-        planId: new mongoose.Types.ObjectId(planId),
-        providerId: id
-    }));
+    serviceId: new mongoose.Types.ObjectId(serviceId),
+    providerId: id
+}));
+
     const waitingProviders = await WaitingProviders.insertMany(waitingEntries);
     return res.json({
         message: "Providers assigned successfully",
