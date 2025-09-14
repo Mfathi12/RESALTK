@@ -300,7 +300,7 @@ export const AddPlan = asyncHandler(async (req, res, next) => {
 
 //get service of plan by admin
 export const GetPlansByAdmin = asyncHandler(async (req, res, next) => {
-    const plan = await Plan.find().populate("services");
+    const plan = await Plan.find().populate("services").select("serviceType status");
     //const services = await Services.find({ _id: { $in: plan.services } }).select("requestName serviceType status   ");
 
     return res.json({
