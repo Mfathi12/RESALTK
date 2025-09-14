@@ -98,7 +98,7 @@ export const handleJoinRequest = asyncHandler(async (req, res, next) => {
 export const DeleteTeam = asyncHandler(async (req, res, next) => {
     const { teamId } = req.params;
     const {userId} = req.user._id;
-    const team = await Team.findBy(teamId);
+    const team = await Team.findById(teamId);
     if (!team) {
         return next(new Error("team not found"))
     }
