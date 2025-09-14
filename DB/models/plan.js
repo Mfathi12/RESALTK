@@ -32,7 +32,15 @@ const PlanSchema = new Schema({
         type: String,
         enum:  ['new-request', 'provider-selection', 'in-progress', 'completed'],
         default: "new"
-    }
+    },
+        candidates: [{
+            type:Types.ObjectId,
+            ref: "User"
+        }],
+        selectedProvider: {
+            type: Types.ObjectId,
+            ref: "User"
+        }
 }, { timestamps: true });
 
 export const Plan = model("Plan", PlanSchema);

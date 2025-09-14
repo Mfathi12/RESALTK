@@ -22,6 +22,10 @@ router.get('/provider/:providerId/allRequests',Authentication,Authorization("Ser
 
 
 router.post('/RE/AddPlan',Authentication,Authorization("Researcher"), ServicesController.AddPlan);
+router.get('/admin/Plans',Authentication,Authorization("admin"),ServicesController.GetPlansByAdmin);
+router.get('/RE/Plans',Authentication,Authorization("Researcher"),ServicesController.GetUserPlans);
+router.patch('/admin/assign-plan-provider/:requestId', Authentication, Authorization("admin"),ServicesController.AssignPlanProviderByAdmin);
+
 /* router.get('/admin/Plans',Authentication,Authorization("admin"),ServicesController.GetPlansByAdmin)
 router.get('/RE/Plans',Authentication,Authorization("Researcher"),ServicesController.GetUserPlans)
 router.get('/RE/:teamId/Plans',Authentication,Authorization("Researcher"),validate(ServicesSchema.GetTeamPlans), ServicesController.GetUserPlans);

@@ -57,47 +57,6 @@ export const AddService = asyncHandler(async (req, res, next) => {
     })
 
 })
-//add plan
-export const AddPlan = asyncHandler(async (req, res, next) => {
-    const { planName, services } = req.body;
-    const userId = req.user._id;
-
-    const user = await User.findById(userId);
-    if (!user) return next(new Error("User not found"));
-
-    const plan = await Plan.create({
-        userId,
-        planName,
-        services: [],
-        status: "new-request"
-    });
-
-    for (const s of services) {
-        // validate data according to type
-        const { error } = chooseServiceSchema(s.serviceType).validate(s);
-        if (error) return next(new Error(error.details[0].message));
-
-        const serviceData = {
-            ownerId: userId,
-            serviceType: s.serviceType,
-            requestName: s.requestName,
-            description: s.description,
-            status: "new-request",
-            details: s.details || {}
-        };
-
-        const service = await Services.create(serviceData);
-        plan.services.push(service._id);
-    }
-
-    await plan.save();
-
-    return res.json({
-        message: "Plan added successfully",
-        plan
-    });
-});
-
 //get services by admin in four status depand on query(in progress,new request ....)
 export const GetServicesByAdmin = asyncHandler(async (req, res, next) => {
     const {status}=req.query;
@@ -299,7 +258,100 @@ export const GetAllProviderRequests=asyncHandler(async (req,res,next)=>{
 
 
 
+//add plan
+export const AddPlan = asyncHandler(async (req, res, next) => {
+    const { planName, services } = req.body;
+    const userId = req.user._id;
 
+    const user = await User.findById(userId);
+    if (!user) return next(new Error("User not found"));
 
+    const plan = await Plan.create({
+        userId,
+        planName,
+        services: [],
+        status: "new-request"
+    });
 
-    
+    for (const s of services) {
+        // validate data according to type
+        const { error } = chooseServiceSchema(s.serviceType).validate(s);
+        if (error) return next(new Error(error.details[0].message));
+
+        const serviceData = {
+            ownerId: userId,
+            serviceType: s.serviceType,
+            requestName: s.requestName,
+            description: s.description,
+            status: "new-request",
+            details: s.details || {}
+        };
+
+        const service = await Services.create(serviceData);
+        plan.services.push(service._id);
+    }
+
+    await plan.save();
+
+    return res.json({
+        message: "Plan added successfully",
+        plan
+    });
+});
+
+//get service of plan by admin
+export const GetPlansByAdmin = asyncHandler(async (req, res, next) => {
+    const { planId } = req.params;
+    const userId = req.user._id;
+
+    const plan = await Plan.findById(planId);
+    if (!plan) return next(new Error("Plan not found"));
+
+    const services = await Services.find({ _id: { $in: plan.services } });
+
+    return res.json({
+        message: "Plan details",
+        plan,
+        services
+    });
+});
+
+//get plan by user 
+export const GetPlansByUser = asyncHandler(async (req, res, next) => {
+    const userId = req.user._id;
+
+    const plans = await Plan.find({ userId });  
+
+    return res.json({
+        message: "Plans details",
+        plans
+    });
+});
+
+export const AssignPlanProviderByAdmin = asyncHandler(async(req,res,next)=>{
+    const {planId}=req.params;
+    const {providerIds}=req.body;
+    const plan=await Plan.findById(planId)
+    if(!plan)
+    {
+        return next(new Error('plan not found'))
+    }
+  const providerObjectIds = providerIds.map(id => new mongoose.Types.ObjectId(id));
+    const providers = await User.find({ _id: { $in: providerObjectIds }, accountType: "Service Provider" });
+    if (providers.length !== providerIds.length) {
+        return next(new Error ( "One or more providers not found or invalid" ));
+    }    
+    plan.candidates.push(...providerObjectIds);
+    plan.status="provider-selection"
+    await plan.save();
+    const waitingEntries = providerObjectIds.map(id => ({
+        planId: new mongoose.Types.ObjectId(planId),
+        providerId: id
+    }));
+    const waitingProviders = await WaitingProviders.insertMany(waitingEntries);
+    return res.json({
+        message: "Providers assigned successfully",
+        waitingProviders,
+        plan
+    });
+})
