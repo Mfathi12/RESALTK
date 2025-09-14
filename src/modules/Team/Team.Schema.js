@@ -52,3 +52,12 @@ export const handleJoinRequestSchema=Joi.object({
     requestId:Joi.string().custom(isValidObjectId).required(),
     action:Joi.string().valid("accept","deney").required(),
 }).required();
+
+export const DeleteTeamSchema=Joi.object({
+    teamId:Joi.string().custom(isValidObjectId).required(),
+}).required();
+
+export const LeaveTeamSchema=Joi.object({
+    teamId:Joi.string().custom(isValidObjectId).required(),
+    userId:Joi.string().custom(isValidObjectId).required(),
+}).required();

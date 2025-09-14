@@ -19,15 +19,9 @@ router.get('/RE/:serviceId/providersAssigned',Authentication,Authorization("Rese
 router.post('/select-provider/:requestId', Authentication, Authorization("Researcher"), ServicesController.SelectProviderByUser);
 router.get('/provider/:providerId/allRequests',Authentication,Authorization("Service Provider"),validate(ServicesSchema.GetAllProviderRequests),ServicesController.GetAllProviderRequests);
 
-
-
 router.post('/RE/AddPlan',Authentication,Authorization("Researcher"), ServicesController.AddPlan);
 router.get('/admin/Plans',Authentication,Authorization("admin"),ServicesController.GetPlansByAdmin);
 router.get('/RE/Plans',Authentication,Authorization("Researcher"),ServicesController.GetUserPlans);
 router.patch('/admin/assign-plan-provider/:planId/:serviceId', Authentication, Authorization("admin"),ServicesController.AssignPlanProviderByAdmin);
-
-/* 
-router.get('/admin/Providers',Authentication,Authorization("admin"),ServicesController.GetProviders);
-*/
 export default router;
     

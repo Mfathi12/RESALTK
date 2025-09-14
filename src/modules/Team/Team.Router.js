@@ -16,6 +16,6 @@ router.get('/:teamId',Authentication, validate(TeamSchema.GetTeamSchema),Authori
 router.get('/',Authentication,Authorization("Researcher","admin","Service Provider","company"),TeamController.GetTeams)
 router.post('/:teamId/join/:userId',Authentication,Authorization("Researcher"),validate(TeamSchema.sendJoinRequestSchema),TeamController.sendJoinRequest)
 router.post('/:teamId/action/:requestId',Authentication,Authorization("Researcher"),validate(TeamSchema.handleJoinRequestSchema),TeamController.handleJoinRequest)
-//router.get('/:userId',Authentication,Authorization('Researcher') ,validate(TeamSchema.GetMemberTeamsSchema), TeamController.GetMemberTeamsSchema)
-//router.patch('/teamId',Authentication,Authorization('Researcher'),validate(TeamSchema.UpdateTeamSchema),TeamController.GetMemberTeamsSchema.UpdateTeamSchema)
+router.delete('/:teamId',Authentication,Authorization("Researcher"),validate(TeamSchema.DeleteTeamSchema),TeamController.DeleteTeam)
+router.delete('/teamId/:userId',Authentication,Authorization('Researcher') ,validate(TeamSchema.LeaveTeamSchema),TeamController.LeaveTeam)
 export default router;
