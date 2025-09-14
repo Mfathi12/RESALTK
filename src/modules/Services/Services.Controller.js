@@ -334,7 +334,7 @@ export const AssignPlanProviderByAdmin = asyncHandler(async(req,res,next)=>{
     {
         return next(new Error('plan not found'))
     }
- if (!plan.services.some(s => s.toString() === serviceId)) {
+if (!plan.services.some(s => s._id.toString() === serviceId)) {
     return next(new Error("Service not part of this plan"));
 }
 
