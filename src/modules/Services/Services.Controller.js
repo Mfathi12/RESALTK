@@ -329,12 +329,13 @@ export const GetUserPlans = asyncHandler(async (req, res, next) => {
 export const AssignPlanProviderByAdmin = asyncHandler(async(req,res,next)=>{
     const {planId,serviceId}=req.params;
     const {providerIds}=req.body;
-    const plan=await Plan.findById(planId).populate("services");
-    if(!plan)
-    {
+     const plan=await Plan.findById(planId); 
+
+    if(!plan) {
         return next(new Error('plan not found'))
     }
-    if (!plan.services.some(s => s._id.toString() === serviceId)) {
+
+    if (!plan.services.some(s => s.toString() === serviceId)) {
         return next(new Error("Service not part of this plan"));
     }
 
