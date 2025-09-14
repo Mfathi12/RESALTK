@@ -317,7 +317,7 @@ export const GetPlansByAdmin = asyncHandler(async (req, res, next) => {
 });
 
 //get plan by user 
-export const GetPlansByUser = asyncHandler(async (req, res, next) => {
+export const GetUserPlans = asyncHandler(async (req, res, next) => {
     const userId = req.user._id;
 
     const plans = await Plan.find({ userId });  
