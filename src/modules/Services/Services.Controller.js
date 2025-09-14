@@ -291,6 +291,7 @@ export const AddPlan = asyncHandler(async (req, res, next) => {
     }
 
     await plan.save();
+    await User.findstByIdAndUpdate(userId, { $push: { plans: plan._id } });
 
     return res.json({
         message: "Plan added successfully",

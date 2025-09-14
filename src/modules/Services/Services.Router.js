@@ -27,7 +27,6 @@ router.get('/RE/Plans',Authentication,Authorization("Researcher"),ServicesContro
 router.patch('/admin/assign-plan-provider/:requestId', Authentication, Authorization("admin"),ServicesController.AssignPlanProviderByAdmin);
 
 /* 
-router.get('/RE/Plans',Authentication,Authorization("Researcher"),ServicesController.GetUserPlans)
 router.get('/admin/Providers',Authentication,Authorization("admin"),ServicesController.GetProviders);
 */
 export default router;
