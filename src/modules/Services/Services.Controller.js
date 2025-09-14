@@ -356,7 +356,7 @@ export const AssignPlanProviderByAdmin = asyncHandler(async(req,res,next)=>{
     await service.save();
 
     const waitingEntries = providerObjectIds.map(id => ({
-        serviceId: new mongoose.Types.ObjectId(serviceId),
+        requestId: new mongoose.Types.ObjectId(serviceId),
         providerId: id
     }));
 
