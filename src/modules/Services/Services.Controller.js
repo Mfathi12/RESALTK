@@ -256,6 +256,7 @@ export const GetAllProviderRequests=asyncHandler(async (req,res,next)=>{
     return res.json({message:"services",services})
 }) 
 
+
 //add plan
 export const AddPlan = asyncHandler(async (req, res, next) => {
     const { planName, services } = req.body;
@@ -300,7 +301,7 @@ export const AddPlan = asyncHandler(async (req, res, next) => {
 //get service of plan by admin
 export const GetPlansByAdmin = asyncHandler(async (req, res, next) => {
     const plan = await Plan.find();
-    const services = await Services.find({ _id: { $in: plan.services } });
+    const services = await Services.find({ _id: { $in: plan.services } }).select("requestName serviceType status   ");
 
     return res.json({
         message: "Plan details",

@@ -44,20 +44,3 @@ const PlanSchema = new Schema({
 }, { timestamps: true });
 
 export const Plan = model("Plan", PlanSchema);
-
-/* export const getPlan = asyncHandler(async (req, res, next) => {
-    const { planId } = req.params;
-    const plan = await Plan.findById(planId)
-        .populate("userId", "name email")
-        .populate({
-            path: "services",
-            populate: { path: "providerId", select: "name email" }
-        });
-
-    if (!plan) return
-
-    return res.json({
-        message: "Plan fetched successfully",
-        plan
-    });
-}); */
