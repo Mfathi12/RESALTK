@@ -256,8 +256,6 @@ export const GetAllProviderRequests=asyncHandler(async (req,res,next)=>{
     return res.json({message:"services",services})
 }) 
 
-
-
 //add plan
 export const AddPlan = asyncHandler(async (req, res, next) => {
     const { planName, services } = req.body;
@@ -301,12 +299,7 @@ export const AddPlan = asyncHandler(async (req, res, next) => {
 
 //get service of plan by admin
 export const GetPlansByAdmin = asyncHandler(async (req, res, next) => {
-    const { planId } = req.params;
-    const userId = req.user._id;
-
-    const plan = await Plan.findById(planId);
-    if (!plan) return next(new Error("Plan not found"));
-
+    const plan = await Plan.find();
     const services = await Services.find({ _id: { $in: plan.services } });
 
     return res.json({

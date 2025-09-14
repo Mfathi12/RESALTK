@@ -26,9 +26,9 @@ router.get('/admin/Plans',Authentication,Authorization("admin"),ServicesControll
 router.get('/RE/Plans',Authentication,Authorization("Researcher"),ServicesController.GetUserPlans);
 router.patch('/admin/assign-plan-provider/:requestId', Authentication, Authorization("admin"),ServicesController.AssignPlanProviderByAdmin);
 
-/* router.get('/admin/Plans',Authentication,Authorization("admin"),ServicesController.GetPlansByAdmin)
+/* 
 router.get('/RE/Plans',Authentication,Authorization("Researcher"),ServicesController.GetUserPlans)
-router.get('/RE/:teamId/Plans',Authentication,Authorization("Researcher"),validate(ServicesSchema.GetTeamPlans), ServicesController.GetUserPlans);
-router.get('/admin/Providers',Authentication,Authorization("admin"),ServicesController.GetProviders); */
+router.get('/admin/Providers',Authentication,Authorization("admin"),ServicesController.GetProviders);
+*/
 export default router;
     
