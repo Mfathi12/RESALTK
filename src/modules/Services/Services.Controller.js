@@ -329,13 +329,16 @@ export const GetUserPlans = asyncHandler(async (req, res, next) => {
 export const AssignPlanProviderByAdmin = asyncHandler(async(req,res,next)=>{
     const {planId,serviceId}=req.params;
     const {providerIds}=req.body;
-     const plan=await Plan.findById(planId); 
-
+    
+    const plan=await Plan.findById(planId); 
     if(!plan) {
         return next(new Error('plan not found'))
     }
 
-    if (!plan.services.some(s => s.toString() === serviceId)) {
+    console.log("Plan services:", plan.services);
+    console.log("ServiceId from params:", serviceId);
+
+    if (!plan.services.some(s => s.equals(serviceId))) {
         return next(new Error("Service not part of this plan"));
     }
 
@@ -347,14 +350,15 @@ export const AssignPlanProviderByAdmin = asyncHandler(async(req,res,next)=>{
     if (providers.length !== providerIds.length) {
         return next(new Error ( "One or more providers not found or invalid" ));
     }    
+
     service.candidates.push(...providerObjectIds);
     service.status = "provider-selection";
     await service.save();
 
     const waitingEntries = providerObjectIds.map(id => ({
-    serviceId: new mongoose.Types.ObjectId(serviceId),
-    providerId: id
-}));
+        serviceId: new mongoose.Types.ObjectId(serviceId),
+        providerId: id
+    }));
 
     const waitingProviders = await WaitingProviders.insertMany(waitingEntries);
     return res.json({
@@ -362,4 +366,5 @@ export const AssignPlanProviderByAdmin = asyncHandler(async(req,res,next)=>{
         waitingProviders,
         plan
     });
-})
+});
+
