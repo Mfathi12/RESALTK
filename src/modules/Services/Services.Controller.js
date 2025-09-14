@@ -231,7 +231,7 @@ export const SelectProviderByUser = asyncHandler(async (req, res, next) => {
     if (!Service.ownerId) {
         return next(new Error("Service owner not found"));
     }
-    if (Service.ownerId.toString() !== userId) {
+    if (Service.ownerId.toString() !== userId.toString()) {
         return next(new Error("Unauthorized action", { cause: 403 }));
     }
     if (!Service.candidates.map(id => id.toString()).includes(providerId)) {
