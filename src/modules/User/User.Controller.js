@@ -21,21 +21,19 @@ export const getAllUsers=asyncHandler(async (req, res,next) => {
         user
     });
 }) */
+
 export const getUserById = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.params.id).select("-password -otp -__v");
     if (!user || user.accountType !== "Service Provider") {
         return next(new Error("Provider not found"));
     }
 
-    // الخدمات اللي خلصت
     const completedServices = await Services.find({
         providerId: user._id,
         status: "completed"
     });
 
     const completedCount = completedServices.length;
-
-    // اجمالي الفلوس
     const totalEarnings = completedServices.reduce(
         (sum, service) => sum + (service.amount || 0),
         0
@@ -43,7 +41,7 @@ export const getUserById = asyncHandler(async (req, res, next) => {
 
     return res.json({
         message: "Provider retrieved successfully",
-        
+        user,
         stats: {
             completedServices: completedCount,
             earnings: totalEarnings
