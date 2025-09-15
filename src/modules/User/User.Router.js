@@ -13,6 +13,8 @@ router.post("/admin/account/doctor",Authentication,Authorization("admin"),
 validate(UserSchema.AddDoctor),UserController.AddDoctor)
 router.get("/providers",Authentication,Authorization("admin"), UserController.getProviders);
 router.patch("/update", Authentication,validate(UserSchema.updateUserSchema), UserController.updateUser);
+router.get('/getProviderServices',Authentication,Authorization("Service Provider"),UserController.getProviderServices);
+
 //router.delete("/:id",validate(UserSchema.UserIdSchema), UserController.deleteUser);
 
 export default router;
