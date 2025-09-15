@@ -43,7 +43,7 @@ export const getUserById = asyncHandler(async (req, res, next) => {
 
     return res.json({
         message: "Provider retrieved successfully",
-        user,
+        
         stats: {
             completedServices: completedCount,
             earnings: totalEarnings
