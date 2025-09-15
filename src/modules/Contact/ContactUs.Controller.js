@@ -1,5 +1,5 @@
 import { asyncHandler } from "../../Utils/asyncHandler.js";
-import { Contact } from "../../../DB/models/Contact.js";
+import { Contact } from "../../../DB/models/ContactUs.js";
 import { User } from "../../../DB/models/User.js";
 
 export const sendContact =asyncHandler(async(req,res,next)=>{
