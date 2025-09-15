@@ -8,7 +8,7 @@ export const sendContact =asyncHandler(async(req,res,next)=>{
     if(!user){
         return next(new Error("User not found"))
     }
-    const message=req.body;
+    const {message}=req.body;
     const contact=await Contact.create({message,userId})
     return res.json({
         message:"message sent successfully",
