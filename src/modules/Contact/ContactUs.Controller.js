@@ -17,7 +17,7 @@ export const sendContact =asyncHandler(async(req,res,next)=>{
 })
 
 export const getContact=asyncHandler(async(req,res,next)=>{
-    const contact=await Contact.find().populate("userId")
+    const contact=await Contact.find()
     return res.json({
         contact
     })
