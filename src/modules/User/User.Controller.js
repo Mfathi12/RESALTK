@@ -10,19 +10,8 @@ export const getAllUsers=asyncHandler(async (req, res,next) => {
     })
 })
 
-/* export const getUserById=asyncHandler(async (req, res,next) => {
-    const user = await User.findById(req.params.id).select("-password -otp -__v");
-    if (!user) {
-        return next(new Error("User not found"));
-    }
-    const servicesAndEarnings=await Services.find
-    return res.json({
-        message: "User retrieved successfully",
-        user
-    });
-}) */
 
-export const getUserById = asyncHandler(async (req, res, next) => {
+/* export const getUserById = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.params.id).select("-password -otp -__v");
     if (!user || user.accountType !== "Service Provider") {
         return next(new Error("Provider not found"));
@@ -46,6 +35,37 @@ export const getUserById = asyncHandler(async (req, res, next) => {
             completedServices: completedCount,
             earnings: totalEarnings
         }
+    });
+}); */
+
+export const getUserById = asyncHandler(async (req, res, next) => {
+    let user = await User.findById(req.params.id).select("-password -otp -__v").lean();
+    if (!user) {
+        return next(new Error("User not found"));
+    }
+
+    // لو اليوزر ده Provider هضيف الإحصائيات
+    if (user.accountType === "Service Provider") {
+        const completedServices = await Services.find({
+            providerId: user._id,
+            status: "completed"
+        });
+
+        const completedCount = completedServices.length;
+        const totalEarnings = completedServices.reduce(
+            (sum, service) => sum + (service.amount || 0),
+            0
+        );
+
+        user.stats = {
+            completedServices: completedCount,
+            earnings: totalEarnings
+        };
+    }
+
+    return res.json({
+        message: "User retrieved successfully",
+        user
     });
 });
 
