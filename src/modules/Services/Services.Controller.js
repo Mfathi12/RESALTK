@@ -392,4 +392,16 @@ export const providerAddService = asyncHandler(async (req, res, next) => {
     });
 });
 
+export const getProviderServices = asyncHandler(async (req, res, next) => {
+    const providerId = req.user._id; 
+    const provider = await User.findOne({ _id: providerId, accountType: "Service Provider" });
+    if (!provider) {
+        return next(new Error("Provider not found or not authorized"));
+    }
+
+    return res.json({
+        message: "Services provided by the provider",
+        providedServices: provider.providedServices
+    });
+});
 
