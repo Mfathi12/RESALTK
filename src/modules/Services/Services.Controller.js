@@ -368,30 +368,6 @@ export const AssignPlanProviderByAdmin = asyncHandler(async(req,res,next)=>{
     });
 });
 
-/* export const providerAddService = asyncHandler(async (req, res, next) => {
-    const providerId = req.user._id; // جاي من الـ token
-    const { serviceType, serviceDescription } = req.body;
-
-    // نتأكد إن الـ user موجود وانه Service Provider
-    const provider = await User.findOne({ _id: providerId, accountType: "Service Provider" });
-    if (!provider) {
-        return next(new Error("Provider not found or not authorized"));
-    }
-
-    // نضيف السيرفس الجديدة
-    provider.providedServices.push({
-        serviceName: serviceType,
-        description: serviceDescription,
-    });
-
-    await provider.save();
-
-    return res.json({
-        message: "Service added successfully",
-        providedServices: provider.providedServices
-    });
-}); */
-
 export const providerAddService = asyncHandler(async (req, res, next) => {
     const providerId = req.user._id; 
     const { serviceName, description, languages, tools } = req.body;
