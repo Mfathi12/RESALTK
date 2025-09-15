@@ -39,12 +39,14 @@ export const getAllUsers=asyncHandler(async (req, res,next) => {
 }); */
 
 export const getUserById = asyncHandler(async (req, res, next) => {
-    let user = await User.findById(req.params.id).select("-password -otp -__v").lean();
+    let user = await User.findById(req.params.id)
+        .select("-password -otp -__v")
+        .lean();
+
     if (!user) {
         return next(new Error("User not found"));
     }
 
-    // لو اليوزر ده Provider هضيف الإحصائيات
     if (user.accountType === "Service Provider") {
         const completedServices = await Services.find({
             providerId: user._id,
@@ -57,9 +59,12 @@ export const getUserById = asyncHandler(async (req, res, next) => {
             0
         );
 
+        const providedCount = user.providedServices ? user.providedServices.length : 0;
+
         user.stats = {
             completedServices: completedCount,
-            earnings: totalEarnings
+            earnings: totalEarnings,
+            providedServicesCount: providedCount
         };
     }
 
@@ -68,6 +73,7 @@ export const getUserById = asyncHandler(async (req, res, next) => {
         user
     });
 });
+
 
 
 export const updateUser=asyncHandler(async (req, res,next) => {
