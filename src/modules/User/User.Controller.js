@@ -1,5 +1,6 @@
 import { User } from "../../../DB/models/User.js";
 import { asyncHandler } from "../../Utils/asyncHandler.js";
+import { Services } from "../../../DB/models/Services.js";
 
 export const getAllUsers=asyncHandler(async (req, res,next) => {
     const users = await User.find().select("-password -otp -__v");
