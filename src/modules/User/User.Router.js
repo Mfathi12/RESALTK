@@ -10,7 +10,8 @@ const router =Router();
 
 //router.get("/",Authentication,Authorization("admin"),UserController.getAllUsers);
 router.get("/:id",Authentication,validate( UserSchema.UserIdSchema), UserController.getUserById);
-router.post("/admin/account/doctor",Authentication,Authorization("admin"),//fileUpload().single("image"), 
+router.post("/admin/account/doctor",Authentication,Authorization("admin"),
+//fileUpload().single("image"), 
 validate(UserSchema.AddDoctor),UserController.AddDoctor)
 router.get("/providers",Authentication,Authorization("admin"), UserController.getProviders);
 router.patch("/:id", Authentication,validate(UserSchema.updateUserSchema), UserController.updateUser);

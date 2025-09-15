@@ -18,6 +18,8 @@ router.post('/provider/:requestId/:providerId/price',Authentication,Authorizatio
 router.get('/RE/:serviceId/providersAssigned',Authentication,Authorization("Researcher"),validate(ServicesSchema.getprovidersAssigned),ServicesController.getprovidersAssigned)
 router.post('/select-provider/:requestId', Authentication, Authorization("Researcher"), ServicesController.SelectProviderByUser);
 router.get('/provider/:providerId/allRequests',Authentication,Authorization("Service Provider"),validate(ServicesSchema.GetAllProviderRequests),ServicesController.GetAllProviderRequests);
+router.post('provider/providerAddService', Authentication, Authorization("Service Provider"), ServicesController.providerAddService);
+
 
 router.post('/RE/AddPlan',Authentication,Authorization("Researcher"), ServicesController.AddPlan);
 router.get('/admin/Plans',Authentication,Authorization("admin"),ServicesController.GetPlansByAdmin);

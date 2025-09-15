@@ -105,20 +105,20 @@ export const DeleteTeam = asyncHandler(async (req, res, next) => {
     if (team.teamLeader.toString() === userId) {
         return next(new Error("Team leader cannot send join request to their own team"));
     } 
-   await Team.findByIdAndDelete(teamId);
+await Team.findByIdAndDelete(teamId);
     return res.json({ messag: "team deleted succefuully", team })
 })
 
 export const LeaveTeam = asyncHandler(async (req, res, next) => {
-    const { teamId, userId } = req.params;   // userId = العضو اللي هيتشال
-    const actingUser = req.user._id;         // اللي بينفذ الطلب (عضو أو قائد)
+    const { teamId, userId } = req.params;   
+    const actingUser = req.user._id;
 
     const team = await Team.findById(teamId);
     if (!team) {
         return next(new Error("Team not found"));
     }
 
-    // الحالة 1: العضو نفسه بيخرج من الفريق
+    
     if (actingUser.toString() === userId) {
         if (team.members.some(member => member.user.toString() === userId)) {
             team.members.pull({ user: userId });
@@ -129,7 +129,7 @@ export const LeaveTeam = asyncHandler(async (req, res, next) => {
         }
     }
 
-    // الحالة 2: القائد بيشيل عضو
+
     if (team.teamLeader.toString() === actingUser.toString()) {
         if (team.members.some(member => member.user.toString() === userId)) {
             team.members.pull({ user: userId });
@@ -139,7 +139,5 @@ export const LeaveTeam = asyncHandler(async (req, res, next) => {
             return next(new Error("This user is not a member of the team"));
         }
     }
-
-    // الحالة 3: أي حد تاني
     return next(new Error("You are not authorized to remove this member"));
 });
