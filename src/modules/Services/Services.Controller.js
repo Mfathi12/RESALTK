@@ -368,7 +368,7 @@ export const AssignPlanProviderByAdmin = asyncHandler(async(req,res,next)=>{
     });
 });
 
-export const providerAddService = asyncHandler(async (req, res, next) => {
+/* export const providerAddService = asyncHandler(async (req, res, next) => {
     const providerId = req.user._id; // جاي من الـ token
     const { serviceType, serviceDescription } = req.body;
 
@@ -390,6 +390,31 @@ export const providerAddService = asyncHandler(async (req, res, next) => {
         message: "Service added successfully",
         providedServices: provider.providedServices
     });
-});
+}); */
 
+export const providerAddService = asyncHandler(async (req, res, next) => {
+    const providerId = req.user._id;
+    const { serviceType, serviceDescription, languages, tools } = req.body;
+
+    // نجيب البروفايدر
+    const provider = await User.findOne({ _id: providerId, accountType: "Service Provider" });
+    if (!provider) {
+        return next(new Error("Provider not found or not authorized"));
+    }
+
+    // نعمل push للسيرفس الجديدة
+    provider.providedServices.push({
+        serviceName: serviceType,   // 🟢 لازم يكون Enum مظبوط زي اللي في الـ schema
+        description: serviceDescription,
+        languages: languages || [],
+        tools: tools || []
+    });
+
+    await provider.save();
+
+    return res.json({
+        message: "Service added successfully",
+        providedServices: provider.providedServices
+    });
+});
 
