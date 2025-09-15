@@ -53,7 +53,13 @@ export const ServicesSchema = new Schema({
     selectedProvider: {
         type: Types.ObjectId,
         ref: "User"
-    }
+    },
+    amount: {
+    type: Number,
+    required: true,
+    default: 0
+}
+
 
 },
     {
