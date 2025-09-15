@@ -47,7 +47,7 @@ export const getUserById = asyncHandler(async (req, res, next) => {
 });
 
 export const updateUser=asyncHandler(async (req, res,next) => {
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+    const user = await User.findByIdAndUpdate(req.user._id, req.body, {
         new: true,
         runValidators: true
     });

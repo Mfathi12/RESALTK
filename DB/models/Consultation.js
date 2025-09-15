@@ -1,5 +1,3 @@
-
-
 export const ConsultationSchema= new Schema({
     resercherId:{type:Types.objectId , ref:"User"},
     doctorId:{type:Types.objectId , ref:"User"},

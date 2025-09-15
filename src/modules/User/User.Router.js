@@ -12,7 +12,7 @@ router.post("/admin/account/doctor",Authentication,Authorization("admin"),
 //fileUpload().single("image"), 
 validate(UserSchema.AddDoctor),UserController.AddDoctor)
 router.get("/providers",Authentication,Authorization("admin"), UserController.getProviders);
-router.patch("/:id", Authentication,validate(UserSchema.updateUserSchema), UserController.updateUser);
+router.patch("/update", Authentication,validate(UserSchema.updateUserSchema), UserController.updateUser);
 //router.delete("/:id",validate(UserSchema.UserIdSchema), UserController.deleteUser);
 
 export default router;
