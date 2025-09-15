@@ -394,7 +394,7 @@ export const AssignPlanProviderByAdmin = asyncHandler(async(req,res,next)=>{
 
 export const providerAddService = asyncHandler(async (req, res, next) => {
     const providerId = req.user._id;
-    const { serviceType, serviceDescription, languages, tools } = req.body;
+    const { serviceName, description, languages, tools } = req.body;
 
     // نجيب البروفايدر
     const provider = await User.findOne({ _id: providerId, accountType: "Service Provider" });
@@ -404,8 +404,8 @@ export const providerAddService = asyncHandler(async (req, res, next) => {
 
     // نعمل push للسيرفس الجديدة
     provider.providedServices.push({
-        serviceName: serviceType,   // 🟢 لازم يكون Enum مظبوط زي اللي في الـ schema
-        description: serviceDescription,
+        serviceName,   // 🟢 لازم يكون Enum مظبوط زي اللي في الـ schema
+        description,
         languages: languages || [],
         tools: tools || []
     });
