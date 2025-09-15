@@ -7,8 +7,6 @@ import { validate } from "../../MiddleWare/Validation.js";
 //import { fileUpload } from "../../Utils/multer.js";
 
 const router =Router();
-
-//router.get("/",Authentication,Authorization("admin"),UserController.getAllUsers);
 router.get("/:id",Authentication,validate( UserSchema.UserIdSchema), UserController.getUserById);
 router.post("/admin/account/doctor",Authentication,Authorization("admin"),
 //fileUpload().single("image"), 
