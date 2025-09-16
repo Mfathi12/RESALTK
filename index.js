@@ -4,6 +4,7 @@ import AuthRouter from './src/modules/Auth/Auth.Route.js';
 import UserRouter from './src/modules/User/User.Router.js';
 import services from './src/modules/Services/Services.Router.js';
 import Team from './src/modules/Team/Team.Router.js';
+import ConsultationRouter from './src/modules/Consultation/Consultation.Router.js';
 import ProjectsAndAchievementsRouter from './src/modules/ProjectsAndAchievements/ProjectsAndAchievements.router.js';
 import EventsAndNewsRouter from './src/modules/EventsAndNews/EventsAndNews.Router.js';
 import Contact from './src/modules/Contact/ContactUs.Router.js';
@@ -26,6 +27,7 @@ app.use('/team', Team);
 app.use('/ProjectsAndAchievements', ProjectsAndAchievementsRouter);
 app.use('/eventsAndNews', EventsAndNewsRouter);
 app.use('/contact', Contact);
+app.use('/consultation', ConsultationRouter);
 
 
 //global error handler

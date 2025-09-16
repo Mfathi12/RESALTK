@@ -392,5 +392,15 @@ export const providerAddService = asyncHandler(async (req, res, next) => {
     });
 });
 
+export const GetservicesByProvider=asyncHandler(async(req,res,next)=>{
+    const providerId=req.user._id;
+    const provider=await User.findOne({_id:providerId})
+    if(!provider){
+        return next(new Error("provider not found"))
+    }
+    const services=await Services.find({providerId})
+    return res.json({message:"services",services})
+})
+
 
 

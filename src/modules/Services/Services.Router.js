@@ -12,7 +12,7 @@ router.get('/admin',Authentication,Authorization("admin"),validate(ServicesSchem
 router.get('/RE/Services',Authentication,Authorization("Researcher"),ServicesController.GetUserServices)
 router.get('/RE/:teamId/Services',Authentication,Authorization("Researcher"),validate(ServicesSchema.GetTeamServices), ServicesController.GetUserServices);
 router.get('/:serviceId',Authentication,validate(ServicesSchema.getSpecificService), ServicesController.GetService)
-router.get('/admin/providers', Authentication, Authorization("admin"),ServicesController.GetProviders);
+router.get  ('/admin/providers', Authentication, Authorization("admin"),ServicesController.GetProviders);
 router.patch('/admin/assign-provider/:requestId', Authentication, Authorization("admin"),validate(ServicesSchema.AssignProviderByAdmin),ServicesController.AssignProviderByAdmin);
 router.post('/provider/:requestId/:providerId/price',Authentication,Authorization("Service Provider"),validate(ServicesSchema.SetProviderPrice),ServicesController.SetProviderPrice);
 router.get('/RE/:serviceId/providersAssigned',Authentication,Authorization("Researcher"),validate(ServicesSchema.getprovidersAssigned),ServicesController.getprovidersAssigned)
@@ -22,7 +22,7 @@ router.post('/provider/providerAddService', Authentication, Authorization("Servi
 
 router.post('/RE/AddPlan',Authentication,Authorization("Researcher"), ServicesController.AddPlan);
 router.get('/admin/Plans',Authentication,Authorization("admin"),ServicesController.GetPlansByAdmin);
-router.get('/RE/Plans',Authentication,Authorization("Researcher"),ServicesController.GetUserPlans);
+router. get('/RE/Plans',Authentication,Authorization("Researcher"),ServicesController.GetUserPlans);
 router.patch('/admin/assign-plan-provider/:planId/:serviceId', Authentication, Authorization("admin"),ServicesController.AssignPlanProviderByAdmin);
+router.get('/:providerId/services',Authentication,Authorization("Service Provider"),ServicesController.GetservicesByProvider);
 export default router;
-    
