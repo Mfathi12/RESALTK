@@ -25,4 +25,5 @@ router.get('/admin/Plans',Authentication,Authorization("admin"),ServicesControll
 router. get('/RE/Plans',Authentication,Authorization("Researcher"),ServicesController.GetUserPlans);
 router.patch('/admin/assign-plan-provider/:planId/:serviceId', Authentication, Authorization("admin"),ServicesController.AssignPlanProviderByAdmin);
 router.get('/:providerId/services',Authentication,Authorization("Service Provider"),ServicesController.GetservicesByProvider);
+router.delete('/removeProvidedService/:serviceId',Authentication,Authorization("Service Provider"),ServicesController.removeProvidedService);
 export default router;

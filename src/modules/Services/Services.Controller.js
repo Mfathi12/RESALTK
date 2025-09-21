@@ -392,6 +392,26 @@ export const providerAddService = asyncHandler(async (req, res, next) => {
     });
 });
 
+export const removeProvidedService  = asyncHandler(async (req, res, next) => {
+    const providerId = req.user._id; 
+    const { serviceId } = req.params;
+
+    const provider = await User.findOne({ _id: providerId, accountType: "Service Provider" });
+    if (!provider) {
+        return next(new Error("Provider not found or not authorized"));
+    }
+    const updateProviderServices=await User.findOneAndApdate({ _id: providerId }, { $pull: { providedServices: { _id: serviceId } } },{
+        new: true
+    });
+
+
+
+    return res.json({
+        message: "Service deleted successfully",
+        providedServices: updateProviderServices.providedServices
+    });
+})
+
 export const GetservicesByProvider=asyncHandler(async(req,res,next)=>{
     const providerId=req.user._id;
     const provider=await User.findOne({_id:providerId})
