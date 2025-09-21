@@ -26,4 +26,5 @@ router. get('/RE/Plans',Authentication,Authorization("Researcher"),ServicesContr
 router.patch('/admin/assign-plan-provider/:planId/:serviceId', Authentication, Authorization("admin"),ServicesController.AssignPlanProviderByAdmin);
 router.get('/:providerId/services',Authentication,Authorization("Service Provider"),ServicesController.GetservicesByProvider);
 router.delete('/removeProvidedService/:serviceId',Authentication,Authorization("Service Provider"),ServicesController.removeProvidedService);
+router.get('/getProviderEarnings',Authentication,Authorization("Service Provider"),ServicesController.getProviderEarnings);
 export default router;

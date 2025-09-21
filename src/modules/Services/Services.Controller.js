@@ -10,25 +10,25 @@ import { WaitingProviders } from "../../../DB/models/WaitingProviders.js";
 //request service by researcher or by teamLeader
 export const AddService = asyncHandler(async (req, res, next) => {
     const { teamId, serviceType } = req.params;
-    const userId=req.user._id;
+    const userId = req.user._id;
 
-    let ownerType="user";
-    let ownerId=userId;
+    let ownerType = "user";
+    let ownerId = userId;
 
     const user = await User.findById(userId);
     if (!user) {
         return next(new Error("User not found"));
     }
-    if(teamId){
-        const team=await Team.findById(teamId)
-        if(!team){
+    if (teamId) {
+        const team = await Team.findById(teamId)
+        if (!team) {
             return next(new Error("team not found"))
         }
-            if (!team.teamLeader.equals(userId)) {
+        if (!team.teamLeader.equals(userId)) {
             return next(new Error("Only team leader can request service for the team"));
-    }
-    ownerType="team";
-    ownerId=teamId;
+        }
+        ownerType = "team";
+        ownerId = teamId;
 
     }
     const ServiceData = {
@@ -42,14 +42,15 @@ export const AddService = asyncHandler(async (req, res, next) => {
         details: req.body.details || {}
     };
     const Service = await Services.create(ServiceData);
-    if(ownerType === "user")
-{ await User.findByIdAndUpdate(
-        userId,
-        { $push: { services: { name: Service.serviceType } } }
-    );}
+    if (ownerType === "user") {
+        await User.findByIdAndUpdate(
+            userId,
+            { $push: { services: { name: Service.serviceType } } }
+        );
+    }
 
-    if(ownerType==="team"){
-    await Team.findByIdAndUpdate(teamId, { $push: { services: Service._id } });
+    if (ownerType === "team") {
+        await Team.findByIdAndUpdate(teamId, { $push: { services: Service._id } });
     }
     return res.json({
         message: "service request added successfully",
@@ -59,75 +60,73 @@ export const AddService = asyncHandler(async (req, res, next) => {
 })
 //get services by admin in four status depand on query(in progress,new request ....)
 export const GetServicesByAdmin = asyncHandler(async (req, res, next) => {
-    const {status}=req.query;
-    let filter={};
-    if(filter)
-        filter.status=status;
-    let projection = {}; 
+    const { status } = req.query;
+    let filter = {};
+    if (filter)
+        filter.status = status;
+    let projection = {};
     let populateOptions = [];
-    switch(status){
+    switch (status) {
         case "new-request":
-        projection={requestName:1,serviceType:1,ownerId:1}
+            projection = { requestName: 1, serviceType: 1, ownerId: 1 }
         case "provider-selection":
-        projection={requestName:1,serviceType:1,ownerId:1}
+            projection = { requestName: 1, serviceType: 1, ownerId: 1 }
         case "in-progress":
-      projection = { requestName: 1, serviceType: 1, deadline: 1, createdAt: 1 };
-      break;
-          case "completed":
-      projection = { requestName: 1, serviceType: 1, selectedProvider: 1, updatedAt: 1 };
-      populateOptions = [{ path: "selectedProvider", select: "name email" }];
-      break;
+            projection = { requestName: 1, serviceType: 1, deadline: 1, createdAt: 1 };
+            break;
+        case "completed":
+            projection = { requestName: 1, serviceType: 1, selectedProvider: 1, updatedAt: 1 };
+            populateOptions = [{ path: "selectedProvider", select: "name email" }];
+            break;
 
-    default:
-      projection = {}; 
+        default:
+            projection = {};
 
     }
-    let query =Services.find(filter,projection)
-    if(populateOptions.length>0){
-        populateOptions.forEach((p)=>{
-            query=query.populate(p);
+    let query = Services.find(filter, projection)
+    if (populateOptions.length > 0) {
+        populateOptions.forEach((p) => {
+            query = query.populate(p);
         });
     }
 
-    const services=await query;
-      if (status === "in-progress") {
-    services.forEach((s) => {
-      s = s.toObject();
-      s.durationDays = Math.ceil((new Date(s.deadline) - new Date(s.createdAt)) / (1000 * 60 * 60 * 24));
-    });
-  }
+    const services = await query;
+    if (status === "in-progress") {
+        services.forEach((s) => {
+            s = s.toObject();
+            s.durationDays = Math.ceil((new Date(s.deadline) - new Date(s.createdAt)) / (1000 * 60 * 60 * 24));
+        });
+    }
     return res.json({
         message: "All Services requests",
-        services 
+        services
     });
 })
 
 //get all services to spesfic user (team or user)
-export const GetUserServices=asyncHandler(async (req,res,next)=>{
-    const {teamId}= req.params;
-    const userId=req.user._id;
-    let services=[];
-     if(teamId)
-    {
-        const team =await Team.findById(teamId)
-        if(!team){
-            return next (new Error("team not found"))
+export const GetUserServices = asyncHandler(async (req, res, next) => {
+    const { teamId } = req.params;
+    const userId = req.user._id;
+    let services = [];
+    if (teamId) {
+        const team = await Team.findById(teamId)
+        if (!team) {
+            return next(new Error("team not found"))
         }
-         services = await Services.find({ _id: { $in: team.services } })
+        services = await Services.find({ _id: { $in: team.services } })
             .select('requestName serviceType status description deadline details');
-    
-    }else{
-        const user=await User.findById(userId)
-    if(!user)
-    {
-        return next(new Error("User not found"))
+
+    } else {
+        const user = await User.findById(userId)
+        if (!user) {
+            return next(new Error("User not found"))
+        }
+        services = await Services.find({ ownerId: userId })
+            .select('requestName serviceType status description deadline');
     }
-    services=await Services.find({ownerId:userId}) 
-    .select('requestName serviceType status description deadline');
-    }
-    
+
     return res.json({
-        message:"User services retrieved successfully",
+        message: "User services retrieved successfully",
         count: services.length,
         services
     })
@@ -145,40 +144,40 @@ export const GetService = asyncHandler(async (req, res, next) => {
         message: "service that you required",
         service
     })
-}) 
+})
 
 //Get All Providers 
-export const GetProviders=asyncHandler(async(req,res,next)=>{
-    const providers= await User.find({ accountType: "Service Provider" })
-    return res.json({message:"providers are available",providers})
+export const GetProviders = asyncHandler(async (req, res, next) => {
+    const providers = await User.find({ accountType: "Service Provider" })
+    return res.json({ message: "providers are available", providers })
 
-}) 
+})
 
 export const AssignProviderByAdmin = asyncHandler(async (req, res, next) => {
-    const {requestId}=req.params;
-    const {providerIds }=req.body;
-    const Service= await Services.findById(requestId);
+    const { requestId } = req.params;
+    const { providerIds } = req.body;
+    const Service = await Services.findById(requestId);
     if (!Service) {
-        return next(new Error ( "Service request not found" ,{cause:404}));
+        return next(new Error("Service request not found", { cause: 404 }));
     }
     const providerObjectIds = providerIds.map(id => new mongoose.Types.ObjectId(id));
     const providers = await User.find({ _id: { $in: providerObjectIds }, accountType: "Service Provider" });
     if (providers.length !== providerIds.length) {
-        return next(new Error ( "One or more providers not found or invalid" ));
+        return next(new Error("One or more providers not found or invalid"));
     }
     Service.candidates.push(...providerObjectIds);
     Service.status = "provider-selection";
     await Service.save();
 
-const waitingEntries = providerObjectIds.map(id => ({
-    requestId: new mongoose.Types.ObjectId(requestId),
-    providerId: id
-}));
+    const waitingEntries = providerObjectIds.map(id => ({
+        requestId: new mongoose.Types.ObjectId(requestId),
+        providerId: id
+    }));
 
     const waitingProviders = await WaitingProviders.insertMany(waitingEntries);
     return res.json({
         message: "Providers assigned successfully",
-        waitingProviders ,
+        waitingProviders,
         Service
     });
 
@@ -204,25 +203,24 @@ export const SetProviderPrice = asyncHandler(async (req, res, next) => {
 });
 
 //get provider assigened to service to user
-export const getprovidersAssigned=asyncHandler(async(req,res,next)=>{
-    const {serviceId}=req.params;
-    const service =await Services.findById(serviceId)
-    if(!service)
-    {
+export const getprovidersAssigned = asyncHandler(async (req, res, next) => {
+    const { serviceId } = req.params;
+    const service = await Services.findById(serviceId)
+    if (!service) {
         return next(new Error('service not found'))
     }
-    if(!service.candidates || service.candidates.length===0){
+    if (!service.candidates || service.candidates.length === 0) {
         return next(new Error('No providers assigned yet'))
     }
-    const providersAssigned=await User.find({_id:{$in:service.candidates}})
-    return res.json({message:"provider assigned for this Services",providersAssigned})
+    const providersAssigned = await User.find({ _id: { $in: service.candidates } })
+    return res.json({ message: "provider assigned for this Services", providersAssigned })
 
 
-}) 
+})
 
 export const SelectProviderByUser = asyncHandler(async (req, res, next) => {
     const { requestId } = req.params;
-    const userId=req.user._id;
+    const userId = req.user._id;
     const { providerId } = req.body;
     const Service = await Services.findById(requestId);
     if (!Service) {
@@ -246,15 +244,15 @@ export const SelectProviderByUser = asyncHandler(async (req, res, next) => {
     });
 });
 
-export const GetAllProviderRequests=asyncHandler(async (req,res,next)=>{
-    const {providerId} =req.params;
-    const provider=await User.findOne({_id:providerId})
-    if(!provider){
+export const GetAllProviderRequests = asyncHandler(async (req, res, next) => {
+    const { providerId } = req.params;
+    const provider = await User.findOne({ _id: providerId })
+    if (!provider) {
         return next(new Error("provider not found"))
     }
-    const services=await Services.find({providerId})
-    return res.json({message:"services",services})
-}) 
+    const services = await Services.find({ providerId })
+    return res.json({ message: "services", services })
+})
 
 //add plan
 export const AddPlan = asyncHandler(async (req, res, next) => {
@@ -300,16 +298,16 @@ export const AddPlan = asyncHandler(async (req, res, next) => {
 
 //get service of plan by admin
 export const GetPlansByAdmin = asyncHandler(async (req, res, next) => {
-        const plans = await Plan.find()
+    const plans = await Plan.find()
         .populate({
             path: "services",
-            select: "serviceType status requestName description" 
+            select: "serviceType status requestName description"
         })
 
     return res.json({
         message: "Plan details",
         plans,
-        
+
     });
 });
 
@@ -317,7 +315,7 @@ export const GetPlansByAdmin = asyncHandler(async (req, res, next) => {
 export const GetUserPlans = asyncHandler(async (req, res, next) => {
     const userId = req.user._id;
 
-    const plans = await Plan.find({ userId });  
+    const plans = await Plan.find({ userId });
 
     return res.json({
         message: "Plans details",
@@ -326,12 +324,12 @@ export const GetUserPlans = asyncHandler(async (req, res, next) => {
 });
 
 //assign plan to provider
-export const AssignPlanProviderByAdmin = asyncHandler(async(req,res,next)=>{
-    const {planId,serviceId}=req.params;
-    const {providerIds}=req.body;
-    
-    const plan=await Plan.findById(planId); 
-    if(!plan) {
+export const AssignPlanProviderByAdmin = asyncHandler(async (req, res, next) => {
+    const { planId, serviceId } = req.params;
+    const { providerIds } = req.body;
+
+    const plan = await Plan.findById(planId);
+    if (!plan) {
         return next(new Error('plan not found'))
     }
 
@@ -348,8 +346,8 @@ export const AssignPlanProviderByAdmin = asyncHandler(async(req,res,next)=>{
     const providerObjectIds = providerIds.map(id => new mongoose.Types.ObjectId(id));
     const providers = await User.find({ _id: { $in: providerObjectIds }, accountType: "Service Provider" });
     if (providers.length !== providerIds.length) {
-        return next(new Error ( "One or more providers not found or invalid" ));
-    }    
+        return next(new Error("One or more providers not found or invalid"));
+    }
 
     service.candidates.push(...providerObjectIds);
     service.status = "provider-selection";
@@ -369,7 +367,7 @@ export const AssignPlanProviderByAdmin = asyncHandler(async(req,res,next)=>{
 });
 
 export const providerAddService = asyncHandler(async (req, res, next) => {
-    const providerId = req.user._id; 
+    const providerId = req.user._id;
     const { serviceName, description, languages, tools } = req.body;
 
     const provider = await User.findOne({ _id: providerId, accountType: "Service Provider" });
@@ -392,15 +390,15 @@ export const providerAddService = asyncHandler(async (req, res, next) => {
     });
 });
 
-export const removeProvidedService  = asyncHandler(async (req, res, next) => {
-    const providerId = req.user._id; 
+export const removeProvidedService = asyncHandler(async (req, res, next) => {
+    const providerId = req.user._id;
     const { serviceId } = req.params;
 
     const provider = await User.findOne({ _id: providerId, accountType: "Service Provider" });
     if (!provider) {
         return next(new Error("Provider not found or not authorized"));
     }
-    const updateProviderServices=await User.findByIdAndUpdate({ _id: providerId }, { $pull: { providedServices: { _id: serviceId } } },{
+    const updateProviderServices = await User.findByIdAndUpdate({ _id: providerId }, { $pull: { providedServices: { _id: serviceId } } }, {
         new: true
     });
 
@@ -412,15 +410,46 @@ export const removeProvidedService  = asyncHandler(async (req, res, next) => {
     });
 })
 
-export const GetservicesByProvider=asyncHandler(async(req,res,next)=>{
-    const providerId=req.user._id;
-    const provider=await User.findOne({_id:providerId})
-    if(!provider){
+export const GetservicesByProvider = asyncHandler(async (req, res, next) => {
+    const providerId = req.user._id;
+    const provider = await User.findOne({ _id: providerId })
+    if (!provider) {
         return next(new Error("provider not found"))
     }
-    const services=await Services.find({providerId})
-    return res.json({message:"services",services})
+    const services = await Services.find({ providerId })
+    return res.json({ message: "services", services })
 })
 
+export const getProviderEarnings = asyncHandler(async (req, res, next) => {
+    const providerId = req.user._id;
+    const provider = await User.findById(providerId);
+    if (!provider) { return next(new Error("provider not found")) }
+
+    const completedServices = await Services.find({ selectedProvider: providerId, status: "completed" })
+    if (!completedServices.length) {
+        return res.json({
+            message: "No completed services found",
+            totalEarnings: 0,
+            services: []
+        });
+    }
+
+    let totalEarnings = 0;
+    const services = completedServices.map((s) => {
+        totalEarnings += s.amount || 0;
+
+        return {
+            date: s.createdAt,
+            serviceName: s.requestName || s.serviceType,
+            description: s.description || "",
+            earnings: s.amount || 0
+        };
+    });
+    return res.json({
+        message: "Provider services with earnings",
+        totalEarnings,
+        services
+    });
 
 
+})
