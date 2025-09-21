@@ -5,6 +5,6 @@ import * as contactController from "./ContactUs.Controller.js";
 
 const router=Router();
 
-router.post('/contact',Authentication,Authorization("Researcher"),contactController.sendContact)
+router.post('/contact',Authentication,Authorization("Researcher","Service Provider"),contactController.sendContact)
 router.get('/contact',Authentication,Authorization("admin"),contactController.getContact)
 export default router;
