@@ -421,35 +421,36 @@ export const GetservicesByProvider = asyncHandler(async (req, res, next) => {
 })
 
 export const getProviderEarnings = asyncHandler(async (req, res, next) => {
-    const providerId = req.user._id;
-    const provider = await User.findById(providerId);
-    if (!provider) { return next(new Error("provider not found")) }
+  const providerId = req.user._id;
 
-    const completedServices = await Services.find({ selectedProvider: providerId, status: "completed" })
-    if (!completedServices.length) {
-        return res.json({
-            message: "No completed services found",
-            totalEarnings: 0,
-            services: []
-        });
-    }
+  const completedServices = await Services.find({
+    providerId,
+    status: "completed"
+  });
 
-    let totalEarnings = 0;
-    const services = completedServices.map((s) => {
-        totalEarnings += s.amount || 0;
-
-        return {
-            date: s.createdAt,
-            serviceName: s.requestName || s.serviceType,
-            description: s.description || "",
-            earnings: s.amount || 0
-        };
-    });
+  if (!completedServices.length) {
     return res.json({
-        message: "Provider services with earnings",
-        totalEarnings,
-        services
+      message: "No completed services found",
+      totalEarnings: 0,
+      services: []
     });
+  }
 
+  let totalEarnings = 0;
+  const services = completedServices.map((s) => {
+    totalEarnings += s.amount || 0;
 
-})
+    return {
+      date: s.createdAt,
+      serviceName: s.requestName || s.serviceType,
+      description: s.description || "",
+      earnings: s.amount || 0
+    };
+  });
+
+  return res.json({
+    message: "Provider services with earnings",
+    totalEarnings,
+    services
+  });
+});
