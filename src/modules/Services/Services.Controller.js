@@ -400,7 +400,7 @@ export const removeProvidedService  = asyncHandler(async (req, res, next) => {
     if (!provider) {
         return next(new Error("Provider not found or not authorized"));
     }
-    const updateProviderServices=await User.findOneAndApdate({ _id: providerId }, { $pull: { providedServices: { _id: serviceId } } },{
+    const updateProviderServices=await User.findByIdAndUpdate({ _id: providerId }, { $pull: { providedServices: { _id: serviceId } } },{
         new: true
     });
 
