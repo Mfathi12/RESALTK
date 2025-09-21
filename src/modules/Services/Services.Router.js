@@ -6,6 +6,8 @@ import * as ServicesSchema from "./Services.Schema.js";
 import { Authorization } from "../../MiddleWare/Authorization.js";
 
 const router = Router();
+router.get('/getProviderEarnings',Authentication,Authorization("Service Provider"),ServicesController.getProviderEarnings);
+
 router.post('/RE/AddService',Authentication,Authorization("Researcher"),ServicesSchema.chooseServiceSchema, ServicesController.AddService);
 router.post('/RE/:teamId/:serviceType',Authentication,Authorization("Researcher"),ServicesSchema.chooseServiceSchema, ServicesController.AddService);
 router.get('/admin',Authentication,Authorization("admin"),validate(ServicesSchema.validateStatus),ServicesController.GetServicesByAdmin)
@@ -22,9 +24,8 @@ router.post('/provider/providerAddService', Authentication, Authorization("Servi
 
 router.post('/RE/AddPlan',Authentication,Authorization("Researcher"), ServicesController.AddPlan);
 router.get('/admin/Plans',Authentication,Authorization("admin"),ServicesController.GetPlansByAdmin);
-router. get('/RE/Plans',Authentication,Authorization("Researcher"),ServicesController.GetUserPlans);
+router.get('/RE/Plans',Authentication,Authorization("Researcher"),ServicesController.GetUserPlans);
 router.patch('/admin/assign-plan-provider/:planId/:serviceId', Authentication, Authorization("admin"),ServicesController.AssignPlanProviderByAdmin);
 router.get('/:providerId/services',Authentication,Authorization("Service Provider"),ServicesController.GetservicesByProvider);
 router.delete('/removeProvidedService/:serviceId',Authentication,Authorization("Service Provider"),ServicesController.removeProvidedService);
-router.get('/getProviderEarnings',Authentication,Authorization("Service Provider"),ServicesController.getProviderEarnings);
 export default router;
