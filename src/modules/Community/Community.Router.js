@@ -5,9 +5,7 @@ import * as communityController from "./Community.Controller.js";
 
 const router=Router();
 
-
 router.post("/AddPost",Authentication,Authorization("Researcher"),communityController.AddPost)
 router.post("/AddReply/:id",Authentication,Authorization("Researcher"),communityController.AddReply);
-
 
 export default router;

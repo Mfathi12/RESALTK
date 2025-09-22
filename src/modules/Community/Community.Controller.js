@@ -29,7 +29,7 @@ export const AddReply=asyncHandler(async(req,res,next)=>{
         return next(new Error("user not found"));
     }
 
-    const Post = await Community.findOne({ _id: postId });
+    const Post =  new mongoose.Types.ObjectId(postId);
 
     if(!Post)
     {
