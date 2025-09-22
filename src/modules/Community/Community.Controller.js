@@ -29,7 +29,8 @@ export const AddReply=asyncHandler(async(req,res,next)=>{
         return next(new Error("user not found"));
     }
 
-    const Post=await Community.findById(postId)
+    const Post = await Community.findOne({ _id: postId });
+
     if(!Post)
     {
         return next (new Error("post not found"))
