@@ -1,7 +1,7 @@
-import { Schema, model } from "mongoose";
+import { model, Schema, Types } from "mongoose";
 const ReplySchema = new Schema(
     {
-        userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+        userId: { type:Types.ObjectId, ref: "User", required: true },
         text: { type: String, required: true },
         reports: [
             {
@@ -17,7 +17,7 @@ const ReplySchema = new Schema(
 
 export const CommunitySchema = new Schema({
     researchId: {
-        type: Schema.Types.ObjectId, ref: "User"
+        type:Types.ObjectId, ref: "User"
     },
     post: {
         type: String
