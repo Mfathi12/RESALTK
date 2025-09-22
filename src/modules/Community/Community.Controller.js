@@ -40,5 +40,4 @@ export const AddReply=asyncHandler(async(req,res,next)=>{
     await Post.save()
 return res.json({message:"repley add successufully",Post})
 
-
 })
