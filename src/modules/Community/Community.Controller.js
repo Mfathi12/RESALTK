@@ -29,8 +29,7 @@ export const AddReply=asyncHandler(async(req,res,next)=>{
         return next(new Error("user not found"));
     }
 
-    const Post =  new mongoose.Types.ObjectId(postId);
-
+    const Post=await Community.findById(postId)
     if(!Post)
     {
         return next (new Error("post not found"))
@@ -39,5 +38,6 @@ export const AddReply=asyncHandler(async(req,res,next)=>{
     Post.replies.push({userId,text})
     await Post.save()
 return res.json({message:"repley add successufully",Post})
+
 
 })
