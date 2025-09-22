@@ -7,7 +7,6 @@ const baseSchema = {
     password: Joi.string().required().min(6).max(30).required(),
     confirmPassword: Joi.string().required().valid(Joi.ref('password')),
     phone: Joi.string().optional(),
-    nationalId: Joi.string().required(),
     accountType: Joi.string().valid('Researcher', 'Service Provider', 'admin', 'doctor').required(),
 };
 
@@ -19,6 +18,7 @@ export const researcherSchema = Joi.object({
     major: Joi.string().required(),
     currentYear: Joi.string().optional(),
     educationLevel: Joi.string().required(),
+    nationalId: Joi.string().required(),
 });
 
 
@@ -29,6 +29,7 @@ export const providerSchema = Joi.object({
   university: Joi.string().required(),
   degree: Joi.string().required(),
   major: Joi.string().required(),
+  nationalId: Joi.string().required(),
 
   providedServices: Joi.array()
     .items(
@@ -85,6 +86,7 @@ export const companySchema = Joi.object({
 // admin schema
 export const adminSchema = Joi.object({
     ...baseSchema,
+    nationalId: Joi.string().required(),
 });
 
 //doctor schema

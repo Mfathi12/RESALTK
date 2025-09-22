@@ -8,6 +8,8 @@ import ConsultationRouter from './src/modules/Consultation/Consultation.Router.j
 import ProjectsAndAchievementsRouter from './src/modules/ProjectsAndAchievements/ProjectsAndAchievements.router.js';
 import EventsAndNewsRouter from './src/modules/EventsAndNews/EventsAndNews.Router.js';
 import Contact from './src/modules/Contact/ContactUs.Router.js';
+import Community from './src/modules/Community/Community.Router.js';
+
 import path from "path"
 import dotenv from 'dotenv';
 dotenv.config();
@@ -28,7 +30,7 @@ app.use('/ProjectsAndAchievements', ProjectsAndAchievementsRouter);
 app.use('/eventsAndNews', EventsAndNewsRouter);
 app.use('/contact', Contact);
 app.use('/consultation', ConsultationRouter);
-
+app.use('/community',Community)
 
 //global error handler
 app.use((err, req, res, next) => { 
