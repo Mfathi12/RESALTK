@@ -37,7 +37,6 @@ export const AddReply=asyncHandler(async(req,res,next)=>{
 
     Post.replies.push({userId,text})
     await Post.save()
- 
 return res.json({message:"repley add successufully",Post})
 
 
