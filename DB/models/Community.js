@@ -20,7 +20,7 @@ export const CommunitySchema = new Schema({
         type: Schema.Types.ObjectId, ref: "User"
     },
     post: {
-        type: string
+        type: String
     },
     replies: [ReplySchema],
     reports: [

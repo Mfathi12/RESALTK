@@ -1,7 +1,7 @@
 import {Router} from "express";
 import { Authentication } from "../../MiddleWare/Authentication.js";
 import { Authorization } from "../../MiddleWare/Authorization.js";
-import * as communityController from "./ContactUs.Controller.js";
+import * as communityController from "./Community.Controller.js";
 
 const router=Router();
 
