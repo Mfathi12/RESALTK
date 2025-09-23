@@ -73,7 +73,7 @@ export const forgetPassword = asyncHandler(async (req, res, next) => {
     user.resetPasswordExpires = Date.now() + 10 * 60 * 1000;
     await user.save();
 
-    
+
     await sendEmail({
         to: email,
         subject: "Resaltk - Password Reset OTP",
