@@ -16,9 +16,9 @@ export const register = asyncHandler(async (req, res, next) => {
         return next(new Error("Passwords do not match"));
     }
     req.body.password = await bcrypt.hash(password, 8);;
-   /*  if (req.body.accountType === "Service Provider" && !req.file) {
-        return next(new Error("CV is required for service providers"));
-    } */
+    /*  if (req.body.accountType === "Service Provider" && !req.file) {
+         return next(new Error("CV is required for service providers"));
+     } */
     const user = await User.create(req.body);
 
     const token = jwt.sign(
@@ -57,33 +57,41 @@ export const login = asyncHandler(async (req, res, next) => {
 })
 
 export const forgetPassword = asyncHandler(async (req, res, next) => {
-    const { email } = req.body
-    const user = await User.findOne({ email })
+    const { email } = req.body;
+    const user = await User.findOne({ email });
     if (!user) {
         return next(new Error("Email not found"));
     }
 
+    const otp = randomstring.generate({
+        length: 6,
+        charset: "numeric",
+    });
 
-    const otp = randomstring.generate(
-        {
-            length: 6,
-            charset: "numeric"
-        }
-    )
     user.resetPasswordOTP = otp;
     user.resetPasswordExpires = Date.now() + 10 * 60 * 1000;
     await user.save();
-    console.log(otp);
-    return res.json({ message: "otp send successfully", data: otp })
 
-})
+    
+    await sendEmail({
+        to: email,
+        subject: "Resaltk - Password Reset OTP",
+        html: `<p>Here is your OTP code:</p>
+           <h2>${otp}</h2>
+           <p>This code will expire in 10 minutes.</p>`,
+    });
+
+    return res.json({ message: "OTP sent successfully" });
+});
+
 
 export const resetPassword = asyncHandler(async (req, res, next) => {
     const { email, otp, newPassword, confirmNewPassword } = req.body;
     const user = await User.findOne({ email, resetPasswordOTP: otp });
     if (!user) {
-        return next(new Error("user not found"));
+        return next(new Error("User not found or invalid OTP"));
     }
+
     if (newPassword !== confirmNewPassword) {
         return next(new Error("Passwords do not match"));
     }
@@ -91,12 +99,19 @@ export const resetPassword = asyncHandler(async (req, res, next) => {
     if (!user.resetPasswordExpires || user.resetPasswordExpires < Date.now()) {
         return next(new Error("OTP has expired"));
     }
+
     user.password = await bcrypt.hash(newPassword, 8);
     user.resetPasswordOTP = undefined;
     user.resetPasswordExpires = undefined;
     await user.save();
+
+    await sendEmail({
+        to: email,
+        subject: "Resaltk - Password Changed",
+        html: `<p>Your password has been reset successfully.</p>`,
+    });
+
     return res.json({
         message: "Password reset successfully",
     });
-
-}) 
+});
