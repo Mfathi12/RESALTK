@@ -60,7 +60,7 @@ export const DeletePost=asyncHandler(async(req,res,next)=>{
     const {postId}=req.params
     const researcherId=req.user._id;
     const Post=await Community.findById(postId);
-    if(Post.researchId.toString() !== researcherId.toString() && req.user.role !== "admin"){
+    if(Post.researchId.toString() !== researcherId.toString() && req.user.accountType !== "admin"){
         return next (new Error("not Authorized to delete this post "))
     }
     await Community.findByIdAndDelete(postId);
