@@ -9,5 +9,5 @@ router.post("/AddPost",Authentication,Authorization("Researcher"),communityContr
 router.post("/AddReply/:postId",Authentication,Authorization("Researcher"),communityController.AddReply);
 router.get("/getAllPosts",Authentication,Authorization("Researcher" ,"admin"),communityController.GetAllPosts)
 router.get("/getPost/:postId",Authentication,Authorization("Researcher" ,"admin"),communityController.GetPost);
-
+router.delete('/deletePost/:postId',Authentication,Authorization("Researcher" ,"admin"),communityController.DeletePost)
 export default router;

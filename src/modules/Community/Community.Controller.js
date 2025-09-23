@@ -52,6 +52,17 @@ export const GetPost=asyncHandler(async(req,res,next)=>{
 })
 
 export const GetAllPosts=asyncHandler(async(req,res,next)=>{
-    const Posts=await Community.find().populate("researchId","name profilePic").populate("replies.userId","name profilePic")
+    const Posts=await Community.find();
     return res.json({messages:"posts returned successufully",Posts})
+})
+
+export const DeletePost=asyncHandler(async(req,res,next)=>{
+    const {postId}=req.params
+    const researcherId=req.user._id;
+    const Post=await Community.findById(postId);
+    if(Post.researchId.toString() !== researcherId.toString() && req.user.role !== "admin"){
+        return next (new Error("not Authorized to delete this post "))
+    }
+    await Community.findByIdAndDelete(postId);
+    return res.json({messages:"post deleted successufully"})
 })
