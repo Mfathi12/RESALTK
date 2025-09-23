@@ -31,7 +31,9 @@ app.use('/eventsAndNews', EventsAndNewsRouter);
 app.use('/contact', Contact);
 app.use('/consultation', ConsultationRouter);
 app.use('/community',Community)
-
+app.get("/",(req,res)=> {
+    res.send("hallo")
+})
 //global error handler
 app.use((err, req, res, next) => { 
     const statusCode = err.statusCode || 500;
