@@ -48,5 +48,10 @@ export const GetPost=asyncHandler(async(req,res,next)=>{
     if(!Post){
         return next (new Error("post not found"))
     }
-    return res.json({messags:"posts returned successufully",Post })
+    return res.json({messags:"post returned successufully",Post })
+})
+
+export const GetAllPosts=asyncHandler(async(req,res,next)=>{
+    const Posts=await Community.find()
+    return res.json({messages:"posts returned successufully",Posts})
 })
