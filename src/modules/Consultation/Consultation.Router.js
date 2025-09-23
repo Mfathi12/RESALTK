@@ -5,7 +5,7 @@ import {Router} from "express";
 const router=Router();
 
 router.post('/addAvailableDate',Authentication,Authorization("doctor"),ConsultationController.addDoctorAvailable)
-router.get('/getDoctorAvailable',Authentication,Authorization("doctor"),ConsultationController.getDoctorAvailable)
+router.get('/getDoctorAvailable',Authentication,Authorization("doctor" ,"Researcher"),ConsultationController.getDoctorAvailable)
 router.patch('/updateAvailableDate/:DoctorAvailableId',Authentication,Authorization("doctor"),ConsultationController.updateDoctorAvailable)
 router.delete('/deleteAvailableDate/:DoctorAvailableId',Authentication,Authorization("doctor"),ConsultationController.deleteDoctorAvailable)
 router.post('/selectAvailableDate/:DoctorAvailableId',Authentication,Authorization("Researcher"),ConsultationController.selectAvailableDate)
