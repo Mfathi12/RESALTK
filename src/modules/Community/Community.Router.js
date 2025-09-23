@@ -10,4 +10,6 @@ router.post("/AddReply/:postId",Authentication,Authorization("Researcher"),commu
 router.get("/getAllPosts",Authentication,Authorization("Researcher" ,"admin"),communityController.GetAllPosts)
 router.get("/getPost/:postId",Authentication,Authorization("Researcher" ,"admin"),communityController.GetPost);
 router.delete('/deletePost/:postId',Authentication,Authorization("Researcher" ,"admin"),communityController.DeletePost)
+router.delete('/deleteReply/:postId/:replyId',Authentication,Authorization("Researcher" ,"admin"),communityController.DeleteReply)
+
 export default router;

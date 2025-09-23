@@ -66,3 +66,22 @@ export const DeletePost=asyncHandler(async(req,res,next)=>{
     await Community.findByIdAndDelete(postId);
     return res.json({messages:"post deleted successufully"})
 })
+
+export const DeleteReply=asyncHandler(async(req,res,next)=>{
+    const {postId ,replyId}=req.params;
+    const researcherId=req.user._id; 
+    const Post=await Community.findById(postId);
+    if (!Post){
+        return next(new Error("not found Post"))
+    }
+    const reply=Post.replies.id(replyId)
+    if (!reply){
+        return next(new Error("not found reply"))
+    }
+    if(reply.userId.toString() !== researcherId.toString() && req.user.role !== "admin"){
+        return next (new Error("not Authorized to delete this reply "))
+    }
+    reply.deleteOne()
+    return res.json({message:"reply deleted succefuuly"})
+    
+})
