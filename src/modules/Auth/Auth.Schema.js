@@ -7,7 +7,7 @@ const baseSchema = {
     password: Joi.string().required().min(6).max(30).required(),
     confirmPassword: Joi.string().required().valid(Joi.ref('password')),
     phone: Joi.string().optional(),
-    accountType: Joi.string().valid('Researcher', 'Service Provider', 'admin', 'doctor').required(),
+    accountType: Joi.string().valid('Researcher', 'Service Provider','company' ,'admin', 'doctor').required(),
 };
 
 // researcher schema
