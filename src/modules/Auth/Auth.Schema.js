@@ -29,7 +29,7 @@ export const providerSchema = Joi.object({
   university: Joi.string().required(),
   degree: Joi.string().required(),
   major: Joi.string().required(),
-  nationalId: Joi.string().required(),
+  nationalId: Joi.string(),
 
   providedServices: Joi.array()
     .items(
