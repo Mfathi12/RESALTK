@@ -1,5 +1,6 @@
 import { User } from "../../../DB/models/User.js";
 import { asyncHandler } from "../../Utils/asyncHandler.js";
+import { sendEmail } from "../../Utils/nodeMailer.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import randomstring from "randomstring"
