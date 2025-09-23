@@ -108,6 +108,7 @@ export const chooseSchema = (req, res, next) => {
             break;
         case "company":
             schema = companySchema;
+             break;
         case "admin":
             schema = adminSchema;
             break;

@@ -35,9 +35,9 @@ export const UserSchema = new Schema({
     }],
 
     //common data 
-    // nationalId: {
-    //     type: String,
-    // },
+    nationalId: {
+         type: String,
+     },
     university: {
         type: String,
     },
