@@ -20,6 +20,7 @@ export const register = asyncHandler(async (req, res, next) => {
     /*  if (req.body.accountType === "Service Provider" && !req.file) {
         return next(new Error("CV is required for service providers"));
      } */
+    console.log(req.body)
     const user = await User.create(req.body);
 
     const token = jwt.sign(
