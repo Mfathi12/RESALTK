@@ -41,3 +41,13 @@ return res.json({message:"repley add successufully",Post})
 
 
 })
+
+export const GetPost=asyncHandler(async(req,res,next)=>{
+    const {postId}=req.params;
+    const Post=await Community.findById(postId)
+    if(!Post){
+        return next (new Error("post not found"))
+    }
+    const Posts =Post.findById(postId).populate("researchId","name profilePic").populate("replies.userId","name profilePic")
+    return res.json({messags:"posts returned successufully",Posts })
+})

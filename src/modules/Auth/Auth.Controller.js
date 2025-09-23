@@ -18,7 +18,7 @@ export const register = asyncHandler(async (req, res, next) => {
     }
     req.body.password = await bcrypt.hash(password, 8);;
     /*  if (req.body.accountType === "Service Provider" && !req.file) {
-         return next(new Error("CV is required for service providers"));
+        return next(new Error("CV is required for service providers"));
      } */
     const user = await User.create(req.body);
 

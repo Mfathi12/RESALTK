@@ -7,5 +7,5 @@ const router=Router();
 
 router.post("/AddPost",Authentication,Authorization("Researcher"),communityController.AddPost)
 router.post("/AddReply/:postId",Authentication,Authorization("Researcher"),communityController.AddReply);
-
+router.get("/getPosts",Authentication,Authorization("Researcher" ,"admin"),communityController.GetPost)
 export default router;
