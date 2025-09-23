@@ -78,7 +78,7 @@ export const DeleteReply=asyncHandler(async(req,res,next)=>{
     if (!reply){
         return next(new Error("not found reply"))
     }
-    if(reply.userId.toString() !== researcherId.toString() && req.user.role !== "admin"){
+    if(reply.userId.toString() !== researcherId.toString() && req.user.accountType !== "admin"){
         return next (new Error("not Authorized to delete this reply "))
     }
     reply.deleteOne()
