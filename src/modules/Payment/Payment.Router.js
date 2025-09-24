@@ -3,60 +3,81 @@ import axios from "axios";
 
 const router = express.Router();
 
-// 1- Get auth token من Paymob
+// ✅ Unified Intention API (Paymob New Version)
 router.post("/pay", async (req, res, next) => {
   try {
-    const { amount, email, phone } = req.body;
+    const { name, email, phoneNumber, country, realprice } = req.body;
 
-    // 1. Authentication
-    const authRes = await axios.post("https://accept.paymob.com/api/auth/tokens", {
-      api_key: process.env.PAYMOB_API_KEY,
-    });
-    const token = authRes.data.token;
+    // تحويل السعر إلى قرش (Paymob لازم بالـ cents)
+    let finalPrice = Number(realprice) * 100;
 
-    // 2. Order registration
-    const orderRes = await axios.post("https://accept.paymob.com/api/ecommerce/orders", {
-      auth_token: token,
-      delivery_needed: "false",
-      amount_cents: amount * 100, // لازم بالقرش
-      currency: "EGP",
-      items: [],
-    });
-    const orderId = orderRes.data.id;
+    // 👇 لو عاوزة conversion (مثلاً من USD لـ EGP) تقدري تحطي هنا
+    // finalPrice = convertedValue * 100;
 
-    // 3. Payment key request
-    const paymentKeyRes = await axios.post("https://accept.paymob.com/api/acceptance/payment_keys", {
-      auth_token: token,
-      amount_cents: amount * 100,
-      expiration: 3600,
-      order_id: orderId,
-      billing_data: {
-        apartment: "NA",
-        email: email || "customer@example.com",
-        floor: "NA",
-        first_name: "Customer",
-        last_name: "Test",
-        street: "NA",
-        building: "NA",
-        phone_number: phone || "+201000000000",
-        shipping_method: "NA",
-        postal_code: "NA",
-        city: "Cairo",
-        country: "EG",
-        state: "NA",
+    // ✅ طلب إنشاء Intention
+    const intentionRes = await axios.post(
+      process.env.PAYMOB_API_URL,
+      {
+        amount: finalPrice,
+        currency: "EGP",
+        payment_methods: ["card"], // أو Integration ID مباشر
+        items: [
+          {
+            name: "Service/Donation",
+            amount: finalPrice,
+            description: "Payment through Resaltk",
+            quantity: 1,
+          },
+        ],
+        billing_data: {
+          first_name: name || "Guest",
+          last_name: name || "User",
+          email: email,
+          phone_number: phoneNumber,
+          country: country || "EG",
+          street: "NA",
+          building: "NA",
+          floor: "NA",
+          apartment: "NA",
+          state: "NA",
+        },
+        customer: {
+          first_name: name || "Guest",
+          last_name: name || "User",
+          email: email,
+          country: country || "EG",
+          phone_number: phoneNumber,
+        },
+        extras: {
+          project: "RESALTK",
+        },
       },
-      currency: "EGP",
-      integration_id: process.env.PAYMOB_INTEGRATION_ID, // بتاخديها من داشبورد بايموب
+      {
+        headers: {
+          Authorization: `Token ${process.env.PAYMOB_SECRET_KEY}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const data = intentionRes.data;
+    const clientSecret = data.client_secret;
+
+    // ✅ Unified Checkout URL
+    const checkoutUrl = `https://accept.paymob.com/unifiedcheckout/?publicKey=${process.env.PAYMOB_PUBLIC_KEY}&clientSecret=${clientSecret}`;
+
+    res.json({
+      success: true,
+      checkoutUrl,
+      paymentDetails: data,
     });
-
-    const paymentToken = paymentKeyRes.data.token;
-
-    // 4. Link للـ iframe
-    const iframeURL = `https://accept.paymob.com/api/acceptance/iframes/${process.env.PAYMOB_IFRAME_ID}?payment_token=${paymentToken}`;
-
-    res.json({ iframeURL });
   } catch (err) {
-    next(err);
+    console.error("Payment error:", err?.response?.data || err.message);
+    res.status(500).json({
+      success: false,
+      message: "Failed to process payment",
+      error: err?.response?.data || err.message,
+    });
   }
 });
 
